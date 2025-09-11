@@ -1,6 +1,7 @@
 package at.minecraft.pugna.utils;
 
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 public final class SoundUtils {
     private SoundUtils() {}
@@ -16,6 +17,8 @@ public final class SoundUtils {
     }
 
     public static void broadcast(Sound sound, float volume, float pitch) {
-        // TODO: Implement method
+        for (Player player : PlayerUtils.getAllOnlinePlayers()) {
+            player.playSound(player.getLocation(), sound, volume, pitch);
+        }
     }
 }
