@@ -63,6 +63,14 @@ public class GameManager {
         return teams;
     }
 
+    public LobbyCountdown getLobbyCountdown() {
+        return lobbyCountdown;
+    }
+
+    public GameCountdown getGameCountdown() {
+        return gameCountdown;
+    }
+
     /* === Operations === */
 
     public void setAllowNether(boolean allowNether) {

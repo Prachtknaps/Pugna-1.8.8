@@ -46,7 +46,7 @@ public final class Pugna extends JavaPlugin {
         pluginManager.registerEvents(new WorldListener(gameManager), this);
 
         /* === Commands === */
-        getCommand("countdown").setExecutor(new CountdownCommand());
+        getCommand("countdown").setExecutor(new CountdownCommand(gameManager));
         getCommand("hub").setExecutor(new HubCommand());
         getCommand("team").setExecutor(new TeamCommand());
 

@@ -4,6 +4,7 @@ import at.minecraft.pugna.config.ChatConfig;
 import at.minecraft.pugna.config.GameConfig;
 import at.minecraft.pugna.game.GameState;
 import at.minecraft.pugna.utils.FileSystemUtils;
+import at.minecraft.pugna.utils.PlayerUtils;
 import org.bukkit.*;
 
 import java.io.File;
@@ -151,7 +152,6 @@ public class WorldManager {
             pugnaNetherWorld.setThundering(false);
             pugnaNetherWorld.setTime(0L);
 
-            // TODO: Find safe spawn location
             int x = (int) GameConfig.getPugnaSpawnX();
             int z = (int) GameConfig.getPugnaSpawnZ();
             int y = pugnaNetherWorld.getHighestBlockYAt(x, z);
@@ -182,7 +182,8 @@ public class WorldManager {
                 world.setDifficulty(Difficulty.PEACEFUL);
                 world.setTime(0L);
                 WorldBorder worldBorder = world.getWorldBorder();
-                worldBorder.setSize(GameConfig.getBorderBaseSize() + (Bukkit.getOnlinePlayers().size() * GameConfig.getBorderPerPlayerSize()));
+                double borderSize = Math.min(GameConfig.getMaxBorderSize(), GameConfig.getBorderBaseSize() + (PlayerUtils.getAllOnlinePlayers().size() * GameConfig.getBorderPerPlayerSize()));
+                worldBorder.setSize(borderSize);
             }
         } else if (state == GameState.GAME_RUNNING) {
             for (World world : worlds) {

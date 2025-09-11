@@ -27,6 +27,10 @@ public final class ChatConfig {
         messages.put(Message.PLAYER_ONLY_COMMAND, getRawPrefix() + "Dieser Befehl kann nur von Spielern ausgeführt werden.");
 
         /* === Countdown === */
+        messages.put(Message.COUNTDOWN_USAGE, "§7/countdown set <seconds>");
+        messages.put(Message.COUNTDOWN_INVALID_NUMBER, getPrefix() + "§cBitte gib eine gültige Zahl ein.§r");
+        messages.put(Message.COUNTDOWN_NOT_ACTIVE, getPrefix() + "§cAktuell läuft kein Countdown.§r");
+        messages.put(Message.COUNTDOWN_UPDATE_SUCCESS, getPrefix() + "§aDer Countdown wurde auf §e{time} §a{unit} gesetzt.§r");
 
         /* === Team === */
         messages.put(Message.TEAM_USAGE, "§7/team list, /team join <name>, /team rename <name>, /team leave§r");

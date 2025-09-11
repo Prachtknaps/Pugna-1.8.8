@@ -7,6 +7,10 @@ public enum Message {
     PLAYER_ONLY_COMMAND,
 
     /* === Countdown === */
+    COUNTDOWN_USAGE,
+    COUNTDOWN_INVALID_NUMBER,
+    COUNTDOWN_NOT_ACTIVE,
+    COUNTDOWN_UPDATE_SUCCESS,
 
     /* === Team === */
     TEAM_USAGE,
