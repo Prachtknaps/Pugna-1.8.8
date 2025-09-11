@@ -39,7 +39,8 @@ public class ConnectionListener implements Listener {
 
         if (state == GameState.LOBBY_WAITING) {
             PlayerUtils.setupPlayer(player);
-            player.teleport(worldManager.getLobbyWorldSpawn());
+            // TODO: player.teleport(worldManager.getLobbyWorldSpawn());
+            player.teleport(worldManager.getTeamSpawns().get(0).get(0)); // TESTING
             ChatUtils.broadcast(joinMessage);
             if (PlayerUtils.getAllOnlinePlayers().size() >= GameConfig.getMinPlayersCount()) {
                 gameManager.setState(GameState.LOBBY_COUNTDOWN);
@@ -152,7 +153,6 @@ public class ConnectionListener implements Listener {
                     Bukkit.getScheduler().runTaskLater(Pugna.getInstance(), () -> {
                         if (!PlayerUtils.areEnoughPlayersOnline()) {
                             gameManager.setState(GameState.GAME_PAUSED);
-                            ChatUtils.broadcast(ChatConfig.getMessage(Message.GAME_PAUSED));
                         }
                     }, 5L);
                 }

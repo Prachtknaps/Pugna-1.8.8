@@ -32,6 +32,7 @@ public final class Pugna extends JavaPlugin {
 
         /* === Managers === */
         worldManager = new WorldManager();
+        worldManager.setup();
         gameManager = new GameManager(worldManager);
 
         /* === Listeners === */

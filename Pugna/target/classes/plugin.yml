@@ -1,0 +1,11 @@
+name: Pugna
+version: '1.0'
+main: at.minecraft.pugna.Pugna
+authors: [ DerStresser ]
+commands:
+  countdown:
+    description: "Allows you to change the countdown seconds."
+  hub:
+    description: "Lets you leave the server."
+  team:
+    description: "Basic team commands (list/join/rename/leave)."
