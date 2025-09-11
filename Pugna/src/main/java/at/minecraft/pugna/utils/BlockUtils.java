@@ -1,7 +1,10 @@
 package at.minecraft.pugna.utils;
 
+import at.minecraft.pugna.config.GameConfig;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -24,14 +27,34 @@ public final class BlockUtils {
     /* === Operations === */
 
     public static boolean isProtectedBlock(Block block) {
-        // TODO: Implement method
+        World world = block.getWorld();
+        if (world == null) {
+            return false;
+        }
+
+        if (world.getName().equals(GameConfig.getPugnaWorldName())) {
+            return PROTECTED_OVERWORLD_BLOCKS.contains(block);
+        } else if (world.getName().equals(GameConfig.getPugnaNetherWorldName())) {
+            return PROTECTED_NETHER_BLOCKS.contains(block);
+        }
+
         return false;
     }
 
     public static void addProtectedBlock(Block block) {
-        // TODO: Implement method
+        World world = block.getWorld();
+        if (world == null) {
+            return;
+        }
+
+        if (world.getName().equals(GameConfig.getPugnaWorldName())) {
+            PROTECTED_OVERWORLD_BLOCKS.add(block);
+        } else if (world.getName().equals(GameConfig.getPugnaNetherWorldName())) {
+            PROTECTED_NETHER_BLOCKS.add(block);
+        }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isSolid(Block block) {
         if (block == null) {
             return false;
@@ -46,7 +69,18 @@ public final class BlockUtils {
     }
 
     public static boolean isEdgeBlock(Block block) {
-        // TODO: Implement method
+        if (block == null) {
+            return false;
+        }
+
+        BlockFace[] blockFaces = { BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST };
+        for (BlockFace blockFace : blockFaces) {
+            Block adjacentBlock = block.getRelative(blockFace);
+            if (!isSolid(adjacentBlock)) {
+                return true;
+            }
+        }
+
         return false;
     }
 }
