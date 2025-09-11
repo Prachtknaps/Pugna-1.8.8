@@ -31,8 +31,8 @@ public final class ChatConfig {
         /* === Team === */
         messages.put(Message.TEAM_USAGE, "§7/team list, /team join <name>, /team rename <name>, /team leave§r");
         messages.put(Message.NO_TEAM, getPrefix() + "§cDu befindest dich in keinem Team.§r");
-        messages.put(Message.TEAM_JOIN_HINT, getPrefix() + "§7Du kannst einem Team mit §e/team join <name> §7beitreten.§r");
-        messages.put(Message.TEAM_RENAME_HINT, "§7Du kannst dein Team mit §e/team rename <name> §7umbenennen.§r");
+        messages.put(Message.TEAM_JOIN_HINT, "§aDu kannst einem Team mit §e/team join <name> §abeitreten.§r");
+        messages.put(Message.TEAM_RENAME_HINT, "§aDu kannst dein Team mit §e/team rename <name> §aumbenennen.§r");
 
         messages.put(Message.TEAM_LIST_HEADER, getPrefix() + "§aAktuell gibt es folgende Teams:§r");
         messages.put(Message.TEAM_LIST_ENTRY, "§7- §f{players}§r");
@@ -76,7 +76,7 @@ public final class ChatConfig {
         messages.put(Message.GAME_RESUMED, getPrefix() + "§aDas Spiel wird nun wieder fortgesetzt.§r");
 
         messages.put(Message.NETHER_TELEPORT_NOT_ALLOWED, getPrefix() + "§cDer Nether kann derzeit nicht betreten werden.§r");
-        messages.put(Message.NETHER_PORTAL_LAVA_PLACE, getPrefix() + "§cDu darfst in der Nähe des Nether-Portals keine Lava platzieren.§r");
+        messages.put(Message.NETHER_PORTAL_BLOCK_MODIFICATION, getPrefix() + "§cDu darfst in der Nähe des Nether-Portals keine Blöcke platzieren oder zerstören.§r");
         messages.put(Message.NETHER_START, getPrefix() + "§aDer Nether kann nun betreten werden.§r");
 
         messages.put(Message.BORDER_SHRINK_COUNTDOWN, getPrefix() + "§cDie Border beginnt in §e{time} §c{unit} zu schrumpfen.§r");

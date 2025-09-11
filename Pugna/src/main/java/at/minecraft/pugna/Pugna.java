@@ -42,7 +42,7 @@ public final class Pugna extends JavaPlugin {
         pluginManager.registerEvents(new DamageListener(worldManager, gameManager), this);
         pluginManager.registerEvents(new InteractionListener(gameManager), this);
         pluginManager.registerEvents(new InventoryListener(gameManager), this);
-        pluginManager.registerEvents(new PortalListener(), this);
+        pluginManager.registerEvents(new PortalListener(worldManager, gameManager), this);
         pluginManager.registerEvents(new WorldListener(gameManager), this);
 
         /* === Commands === */
