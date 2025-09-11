@@ -82,4 +82,9 @@ public class ChatMessage {
         message = message.replace("{z}", Integer.toString(z));
         return this;
     }
+
+    public ChatMessage count(int count) {
+        message = message.replace("{count}", Integer.toString(count));
+        return this;
+    }
 }

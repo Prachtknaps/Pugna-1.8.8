@@ -15,7 +15,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /*
 * TODO:
-*  - Block forbidden items
 *  - Place spawn chests
 *  - Fill spawn chests
 *  - Scoreboard in gameTimer

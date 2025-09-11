@@ -82,6 +82,8 @@ public final class ChatConfig {
         messages.put(Message.GAME_PAUSED, getPrefix() + "§cDas Spiel wurde pausiert. Bitte warte, bis mehr als die Hälfte der lebenden Spieler online ist.§r");
         messages.put(Message.GAME_RESUMED, getPrefix() + "§aDas Spiel wird nun wieder fortgesetzt.§r");
 
+        messages.put(Message.FORBIDDEN_ITEMS_REMOVED, getPrefix() + "§cEs wurden §e{count} §cVerbotene Items aus deinem Inventar entfernt.§r");
+
         messages.put(Message.NETHER_TELEPORT_NOT_ALLOWED, getPrefix() + "§cDer Nether kann derzeit nicht betreten werden.§r");
         messages.put(Message.NETHER_PORTAL_BLOCK_MODIFICATION, getPrefix() + "§cDu darfst in der Nähe des Nether-Portals keine Blöcke platzieren oder zerstören.§r");
         messages.put(Message.NETHER_START, getPrefix() + "§aDer Nether kann nun betreten werden.§r");

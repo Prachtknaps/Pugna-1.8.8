@@ -9,6 +9,8 @@ import at.minecraft.pugna.utils.*;
 import at.minecraft.pugna.world.WorldManager;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
@@ -56,7 +58,10 @@ public class GameTimer extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (seconds == netherStartSeconds) {
+        if (seconds % 10 == 0) {
+            handleForbiddenItemRemove();
+        }
+        else if (seconds == netherStartSeconds) {
             handleNetherStart();
         } else if (seconds >= borderShrinkWarnStartSeconds && seconds < borderShrinkStartSeconds) {
             handleBorderShrinkWarning(seconds);
@@ -85,6 +90,44 @@ public class GameTimer extends BukkitRunnable {
             }
         } else {
             seconds++;
+        }
+    }
+
+    private void handleForbiddenItemRemove() {
+        for (Player player : PlayerUtils.getAllOnlinePlayers()) {
+            PlayerInventory inventory = player.getInventory();
+            int removed = 0;
+
+            ItemStack[] contents = inventory.getContents();
+            for (int i = 0; i < contents.length; i++) {
+                ItemStack itemStack = contents[i];
+                if (itemStack != null && itemStack.getType() != Material.AIR && ItemUtils.shouldBlock(itemStack)) {
+                    removed += itemStack.getAmount();
+                    contents[i] = null;
+                }
+            }
+            inventory.setContents(contents);
+
+            ItemStack[] armor = inventory.getArmorContents();
+            for (int i = 0; i < armor.length; i++) {
+                ItemStack itemStack = armor[i];
+                if (itemStack != null && itemStack.getType() != Material.AIR && ItemUtils.shouldBlock(itemStack)) {
+                    removed += itemStack.getAmount();
+                    armor[i] = null;
+                }
+            }
+            inventory.setArmorContents(armor);
+
+            ItemStack cursor = player.getItemOnCursor();
+            if (cursor != null && cursor.getType() != Material.AIR && ItemUtils.shouldBlock(cursor)) {
+                removed += cursor.getAmount();
+                player.setItemOnCursor(null);
+            }
+
+            if (removed > 0) {
+                String message = ChatConfig.getChatMessage(Message.FORBIDDEN_ITEMS_REMOVED).count(removed).toString();
+                player.sendMessage(message);
+            }
         }
     }
 
