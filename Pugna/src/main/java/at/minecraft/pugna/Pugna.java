@@ -7,6 +7,7 @@ import at.minecraft.pugna.config.ChatConfig;
 import at.minecraft.pugna.config.GameConfig;
 import at.minecraft.pugna.game.GameManager;
 import at.minecraft.pugna.listeners.*;
+import at.minecraft.pugna.utils.ChatUtils;
 import at.minecraft.pugna.world.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -31,7 +32,7 @@ public final class Pugna extends JavaPlugin {
 
         /* === Managers === */
         worldManager = new WorldManager();
-        gameManager = new GameManager();
+        gameManager = new GameManager(worldManager);
 
         /* === Listeners === */
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
@@ -50,7 +51,7 @@ public final class Pugna extends JavaPlugin {
         getCommand("team").setExecutor(new TeamCommand());
 
         /* === Logging === */
-        Bukkit.getLogger().info("[Pugna] The plugin has been enabled.");
+        Bukkit.getLogger().info(ChatConfig.getRawPrefix() + "The plugin has been enabled.");
     }
 
     @Override
@@ -59,7 +60,7 @@ public final class Pugna extends JavaPlugin {
         worldManager.cleanUp();
 
         /* === Logging === */
-        Bukkit.getLogger().info("[Pugna] The plugin has been disabled.");
+        Bukkit.getLogger().info(ChatConfig.getRawPrefix() + "[The plugin has been disabled.");
     }
 
     /* === Getters === */
