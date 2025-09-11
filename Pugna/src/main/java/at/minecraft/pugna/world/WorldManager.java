@@ -3,15 +3,18 @@ package at.minecraft.pugna.world;
 import at.minecraft.pugna.config.ChatConfig;
 import at.minecraft.pugna.config.GameConfig;
 import at.minecraft.pugna.game.GameState;
+import at.minecraft.pugna.utils.FileSystemUtils;
 import org.bukkit.*;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class WorldManager {
     private final SeedManager seedManager;
-    private List<List<Location>> teamSpawns;
+    private final List<List<Location>> teamSpawns;
 
     public WorldManager() {
         this.seedManager = new SeedManager();
@@ -165,10 +168,66 @@ public class WorldManager {
     }
 
     public void updateWorlds(GameState state) {
-        // TODO: Implement method
+        World pugnaWorld = getPugnaWorldSpawn().getWorld();
+        World pugnaNetherWorld = getPugnaNetherWorldSpawn().getWorld();
+
+        List<World> worlds = Arrays.asList(pugnaWorld, pugnaNetherWorld);
+
+        if (state == GameState.LOBBY_WAITING || state == GameState.LOBBY_COUNTDOWN || state == GameState.GAME_COUNTDOWN) {
+            for (World world : worlds) {
+                world.setGameRuleValue("doDaylightCycle", "false");
+                world.setGameRuleValue("doFireTick", "false");
+                world.setGameRuleValue("mobGriefing", "false");
+                world.setGameRuleValue("randomTickSpeed", "100");
+                world.setDifficulty(Difficulty.PEACEFUL);
+                world.setTime(0L);
+                WorldBorder worldBorder = world.getWorldBorder();
+                worldBorder.setSize(GameConfig.getBorderBaseSize() + (Bukkit.getOnlinePlayers().size() * GameConfig.getBorderPerPlayerSize()));
+            }
+        } else if (state == GameState.GAME_RUNNING) {
+            for (World world : worlds) {
+                world.setGameRuleValue("doDaylightCycle", "true");
+                world.setGameRuleValue("doFireTick", "true");
+                world.setGameRuleValue("mobGriefing", "true");
+                world.setGameRuleValue("randomTickSpeed", "3");
+                world.setDifficulty(Difficulty.HARD);
+            }
+        } else if (state == GameState.GAME_PAUSED) {
+            for (World world : worlds) {
+                world.setGameRuleValue("doDaylightCycle", "false");
+                world.setGameRuleValue("doFireTick", "false");
+                world.setGameRuleValue("mobGriefing", "false");
+            }
+        } else if (state == GameState.GAME_RESTARTING) {
+            for (World world : worlds) {
+                world.setGameRuleValue("doDaylightCycle", "false");
+                world.setGameRuleValue("doFireTick", "false");
+            }
+        }
     }
 
     public void cleanUp() {
-        // TODO: Implement method
+        String lobbyWorldName = GameConfig.getLobbyWorldName();
+        String pugnaWorldName = GameConfig.getPugnaWorldName();
+        String pugnaNetherWorldName = GameConfig.getPugnaNetherWorldName();
+
+        if (Bukkit.getWorld(pugnaWorldName) != null) {
+            Bukkit.unloadWorld(pugnaWorldName, false);
+        }
+
+        if (Bukkit.getWorld(pugnaNetherWorldName) != null) {
+            Bukkit.unloadWorld(pugnaNetherWorldName, false);
+        }
+
+        File container = Bukkit.getWorldContainer();
+        File pugnaWorldDirectory = new File(container, pugnaWorldName);
+        File pugnaNetherWorldDirectory = new File(container, pugnaNetherWorldName);
+        File playerDataDirectory = new File(container, lobbyWorldName + File.separator + "playerdata");
+
+        FileSystemUtils.deleteDirectory(pugnaWorldDirectory);
+        FileSystemUtils.deleteDirectory(pugnaNetherWorldDirectory);
+        FileSystemUtils.deleteDirectory(playerDataDirectory);
+
+        Bukkit.getLogger().info(ChatConfig.getRawPrefix() + "WorldManager.cleanUp: The server has been cleaned successfully.");
     }
 }

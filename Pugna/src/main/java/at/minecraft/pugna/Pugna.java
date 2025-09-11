@@ -7,7 +7,6 @@ import at.minecraft.pugna.config.ChatConfig;
 import at.minecraft.pugna.config.GameConfig;
 import at.minecraft.pugna.game.GameManager;
 import at.minecraft.pugna.listeners.*;
-import at.minecraft.pugna.utils.ChatUtils;
 import at.minecraft.pugna.world.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;

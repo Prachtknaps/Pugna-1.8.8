@@ -31,7 +31,9 @@ at\minecraft\pugna\Pugna.class
 at\minecraft\pugna\listeners\WorldListener.class
 at\minecraft\pugna\teams\Team.class
 at\minecraft\pugna\config\GameConfig.class
+at\minecraft\pugna\game\GameTimer.class
 at\minecraft\pugna\utils\ItemUtils.class
 at\minecraft\pugna\utils\CountdownUtils.class
 at\minecraft\pugna\countdowns\LobbyCountdown.class
 at\minecraft\pugna\world\SpawnGenerator.class
+at\minecraft\pugna\world\NetherPortal.class

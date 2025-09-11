@@ -3,18 +3,21 @@ package at.minecraft.pugna.game;
 import at.minecraft.pugna.chat.Message;
 import at.minecraft.pugna.config.ChatConfig;
 import at.minecraft.pugna.config.GameConfig;
+import at.minecraft.pugna.countdowns.GameCountdown;
 import at.minecraft.pugna.countdowns.LobbyCountdown;
+import at.minecraft.pugna.countdowns.RestartCountdown;
 import at.minecraft.pugna.teams.Team;
 import at.minecraft.pugna.utils.ChatUtils;
 import at.minecraft.pugna.utils.PlayerUtils;
 import at.minecraft.pugna.utils.TeamUtils;
 import at.minecraft.pugna.world.WorldManager;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameManager {
-    // TODO: Implement class
     private final WorldManager worldManager;
 
     private GameState state;
@@ -22,11 +25,12 @@ public class GameManager {
 
     private final List<Team> teams;
 
-    private LobbyCountdown lobbyCountdown;
-    // TODO: private GameCountdown gameCountdown;
-    // TODO: private RestartCountdown restartCountdown;
+    private LobbyCountdown lobbyCountdown = null;
+    private GameCountdown gameCountdown = null;
+    @SuppressWarnings("FieldCanBeLocal")
+    private RestartCountdown restartCountdown = null;
 
-    // TODO: private GameTimer gameTimer;
+    private GameTimer gameTimer = null;
 
     public GameManager(WorldManager worldManager) {
         this.worldManager = worldManager;
@@ -68,7 +72,6 @@ public class GameManager {
     public void setState(GameState state) {
         this.state = state;
 
-        // TODO: Implement method
         if (state == GameState.LOBBY_WAITING) {
             if (lobbyCountdown != null) {
                 lobbyCountdown.cancel();
@@ -81,30 +84,68 @@ public class GameManager {
             TeamUtils.assignPlayers();
             TeamUtils.removeEmptyTeams();
             TeamUtils.teleportTeams();
-            // TODO: gameCountdown = new GameCountdown(this);
-            // TODO: gameCountdown.start();
+            if (gameCountdown == null) {
+                gameCountdown = new GameCountdown(this);
+            }
+            gameCountdown.start();
         } else if (state == GameState.GAME_RUNNING) {
-            // TODO: if (gameTimer == null) {
-            // TODO: gameTimer = new GameTimer(worldManager, this);
-            // TODO: gameTimer.start(); }
+            if (gameTimer == null) {
+                gameTimer = new GameTimer(worldManager, this);
+                gameTimer.start();
+            }
         } else if (state == GameState.GAME_PAUSED) {
             ChatUtils.broadcast(ChatConfig.getMessage(Message.GAME_PAUSED));
         } else if (state == GameState.GAME_RESTARTING) {
-            // TODO: if (gameTimer != null) {
-            // TODO: gameTimer.cancel(); }
+            if (gameTimer != null) {
+                gameTimer.cancel();
+            }
             PlayerUtils.clearSpectators();
-            // TODO: restartCountdown = new RestartCountdown();
-            // TODO: restartCountdown.start();
+            restartCountdown = new RestartCountdown();
+            restartCountdown.start();
         }
 
         worldManager.updateWorlds(state);
     }
 
     public void handleElimination() {
-        // TODO: Implement method
+        if (state == GameState.GAME_COUNTDOWN || state == GameState.GAME_RUNNING) {
+            for (Team team : teams) {
+                if (team.isEmpty() && team.getCapacity() >= 2) {
+                    String message = ChatConfig.getChatMessage(Message.TEAM_ELIMINATED).team(team.getName()).toString();
+                    ChatUtils.broadcast(message);
+                }
+            }
+
+            TeamUtils.removeEmptyTeams();
+            checkForWinner();
+        }
     }
 
     public void checkForWinner() {
-        // TODO: Implement method
+        if (teams.size() != 1) {
+            return;
+        }
+
+        Team winnerTeam = teams.get(0);
+        String message;
+
+        if (winnerTeam.getPlayers().size() >= 2) {
+            message = ChatConfig.getChatMessage(Message.TEAM_WIN).team(winnerTeam.getName()).toString();
+        } else {
+            Player winner = Bukkit.getPlayer(winnerTeam.getPlayers().get(0));
+            if (winner != null && winner.isOnline()) {
+                message = ChatConfig.getChatMessage(Message.PLAYER_WIN).player(winner.getName()).toString();
+            } else {
+                // Fallback
+                message = ChatConfig.getChatMessage(Message.TEAM_WIN).team(winnerTeam.getName()).toString();
+            }
+        }
+
+        if (state == GameState.GAME_COUNTDOWN) {
+            gameCountdown.cancel();
+        }
+
+        ChatUtils.broadcast(message);
+        setState(GameState.GAME_RESTARTING);
     }
 }

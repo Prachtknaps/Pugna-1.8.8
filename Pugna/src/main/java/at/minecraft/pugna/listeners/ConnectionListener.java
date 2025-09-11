@@ -39,8 +39,8 @@ public class ConnectionListener implements Listener {
 
         if (state == GameState.LOBBY_WAITING) {
             PlayerUtils.setupPlayer(player);
-            // TODO: player.teleport(worldManager.getLobbyWorldSpawn());
-            player.teleport(worldManager.getTeamSpawns().get(0).get(0)); // TESTING
+            player.teleport(worldManager.getLobbyWorldSpawn());
+            //player.teleport(worldManager.getTeamSpawns().get(0).get(0)); // TESTING
             ChatUtils.broadcast(joinMessage);
             if (PlayerUtils.getAllOnlinePlayers().size() >= GameConfig.getMinPlayersCount()) {
                 gameManager.setState(GameState.LOBBY_COUNTDOWN);
