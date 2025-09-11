@@ -39,8 +39,8 @@ public class GameManager {
         for (int i = 0; i < GameConfig.getMaxTeamsCount(); i++) {
             String defaultName = GameConfig.getDefaultTeamNames().get(i);
             Team team = new Team(i, capacity);
-            // TODO: team.setName(defaultName);
-            // TODO: team.setSpawns(worldManager.getTeamSpawns().get(i));
+            team.setName(defaultName);
+            team.setSpawns(worldManager.getTeamSpawns().get(i));
             teams.add(team);
         }
     }
