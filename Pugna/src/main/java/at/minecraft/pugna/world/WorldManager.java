@@ -161,7 +161,7 @@ public class WorldManager {
             worldBorder.setCenter(getPugnaNetherWorldSpawn());
             worldBorder.setSize(GameConfig.getBorderBaseSize());
 
-            Bukkit.getLogger().info(ChatConfig.getRawPrefix() + "Generated world '" + GameConfig.getPugnaWorldName() + "' successfully.");
+            Bukkit.getLogger().info(ChatConfig.getRawPrefix() + "Generated world '" + GameConfig.getPugnaNetherWorldName() + "' successfully.");
         }
 
         return pugnaNetherWorld;

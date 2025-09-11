@@ -73,6 +73,7 @@ public final class ChatConfig {
         messages.put(Message.GAME_START_COUNTDOWN, getPrefix() + "§3Das Spiel beginnt in §e{time} §3{unit}.§r");
         messages.put(Message.GAME_START, getPrefix() + "§aMögen die Spiele beginnen!§r");
         messages.put(Message.GAME_PAUSED, getPrefix() + "§cDas Spiel wurde pausiert. Bitte warte, bis mehr als die Hälfte der lebenden Spieler online ist.§r");
+        messages.put(Message.GAME_RESUMED, getPrefix() + "§aDas Spiel wird nun wieder fortgesetzt.§r");
 
         messages.put(Message.NETHER_TELEPORT_NOT_ALLOWED, getPrefix() + "§cDer Nether kann derzeit nicht betreten werden.§r");
         messages.put(Message.NETHER_PORTAL_LAVA_PLACE, getPrefix() + "§cDu darfst in der Nähe des Nether-Portals keine Lava platzieren.§r");

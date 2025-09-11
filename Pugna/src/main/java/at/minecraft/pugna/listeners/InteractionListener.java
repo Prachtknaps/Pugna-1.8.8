@@ -63,7 +63,7 @@ public class InteractionListener implements Listener {
         }
 
         if (state == GameState.GAME_PAUSED && toLocation != null) {
-            if (fromLocation.getX() != toLocation.getX() || fromLocation.getY() != toLocation.getY() || fromLocation.getZ() != toLocation.getZ()) {
+            if (fromLocation.getX() != toLocation.getX() || fromLocation.getY() != toLocation.getY() || fromLocation.getZ() != toLocation.getZ() || fromLocation.getYaw() != toLocation.getYaw() || fromLocation.getPitch() != toLocation.getPitch()) {
                 event.setTo(fromLocation);
             }
         }

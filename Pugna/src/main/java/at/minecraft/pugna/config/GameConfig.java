@@ -105,8 +105,8 @@ public final class GameConfig {
         borderEndSize = isLongGame ? 512 : 256;
         maxBorderSize = 4096;
 
-        lobbyCountdownSeconds = 60;
-        gameCountdownSeconds = 40;
+        lobbyCountdownSeconds = 10;
+        gameCountdownSeconds = 10;
         restartCountdownSeconds = 25;
 
         netherStartSeconds = isLongGame ? (2 * 60 * 60) : (30 * 60);

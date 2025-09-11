@@ -76,6 +76,8 @@ public final class SpawnGenerator {
         int centerX = spawnLocation.getBlockX();
         int centerZ = spawnLocation.getBlockZ();
 
+        OverworldPortal portal = new OverworldPortal(world, centerX, centerZ);
+        portal.build();
         // TODO: Implement method
     }
 

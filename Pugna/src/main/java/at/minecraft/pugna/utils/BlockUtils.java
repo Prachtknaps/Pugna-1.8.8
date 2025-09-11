@@ -1,6 +1,7 @@
 package at.minecraft.pugna.utils;
 
 import at.minecraft.pugna.config.GameConfig;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -17,9 +18,12 @@ public final class BlockUtils {
     private static final List<Block> PROTECTED_OVERWORLD_BLOCKS = new ArrayList<>();
     private static final List<Block> PROTECTED_NETHER_BLOCKS = new ArrayList<>();
 
+    private static final List<Location> SAFE_AREAS_OVERWORLD = new ArrayList<>();
+    private static final List<Location> SAFE_AREAS_NETHER = new ArrayList<>();
+
     private static final Set<Material> NON_SOLID = EnumSet.of(
             Material.AIR, Material.WATER, Material.STATIONARY_WATER, Material.LAVA, Material.STATIONARY_LAVA,
-            Material.LONG_GRASS, Material.YELLOW_FLOWER, Material.RED_ROSE, Material.SAPLING, Material.CROPS,
+            Material.LONG_GRASS, Material.DOUBLE_PLANT, Material.YELLOW_FLOWER, Material.RED_ROSE, Material.SAPLING, Material.CROPS,
             Material.SEEDS, Material.SUGAR_CANE_BLOCK, Material.BROWN_MUSHROOM, Material.RED_MUSHROOM, Material.FIRE,
             Material.SNOW, Material.TORCH, Material.SIGN_POST, Material.WALL_SIGN, Material.LADDER, Material.VINE, Material.WEB
     );
@@ -51,6 +55,34 @@ public final class BlockUtils {
             PROTECTED_OVERWORLD_BLOCKS.add(block);
         } else if (world.getName().equals(GameConfig.getPugnaNetherWorldName())) {
             PROTECTED_NETHER_BLOCKS.add(block);
+        }
+    }
+
+    public static boolean isSafeArea(Location location) {
+        World world = location.getWorld();
+        if (world == null) {
+            return false;
+        }
+
+        if (world.getName().equals(GameConfig.getPugnaWorldName())) {
+            return SAFE_AREAS_OVERWORLD.contains(location);
+        } else if (world.getName().equals(GameConfig.getPugnaNetherWorldName())) {
+            return SAFE_AREAS_NETHER.contains(location);
+        }
+
+        return false;
+    }
+
+    public static void addSafeArea(Location location) {
+        World world = location.getWorld();
+        if (world == null) {
+            return;
+        }
+
+        if (world.getName().equals(GameConfig.getPugnaWorldName())) {
+            SAFE_AREAS_OVERWORLD.add(location);
+        } else if (world.getName().equals(GameConfig.getPugnaNetherWorldName())) {
+            SAFE_AREAS_NETHER.add(location);
         }
     }
 
