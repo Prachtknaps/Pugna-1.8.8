@@ -36,14 +36,14 @@ public final class Pugna extends JavaPlugin {
 
         /* === Listeners === */
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
-        pluginManager.registerEvents(new BlockListener(), this);
-        pluginManager.registerEvents(new ChatListener(), this);
-        pluginManager.registerEvents(new ConnectionListener(), this);
-        pluginManager.registerEvents(new DamageListener(), this);
-        pluginManager.registerEvents(new InteractionListener(), this);
-        pluginManager.registerEvents(new InventoryListener(), this);
+        pluginManager.registerEvents(new BlockListener(gameManager), this);
+        pluginManager.registerEvents(new ChatListener(gameManager), this);
+        pluginManager.registerEvents(new ConnectionListener(worldManager, gameManager), this);
+        pluginManager.registerEvents(new DamageListener(worldManager, gameManager), this);
+        pluginManager.registerEvents(new InteractionListener(gameManager), this);
+        pluginManager.registerEvents(new InventoryListener(gameManager), this);
         pluginManager.registerEvents(new PortalListener(), this);
-        pluginManager.registerEvents(new WorldListener(), this);
+        pluginManager.registerEvents(new WorldListener(gameManager), this);
 
         /* === Commands === */
         getCommand("countdown").setExecutor(new CountdownCommand());

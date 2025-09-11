@@ -2,6 +2,7 @@ package at.minecraft.pugna.utils;
 
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class PlayerUtils {
@@ -11,7 +12,8 @@ public final class PlayerUtils {
 
     public static List<Player> getAllOnlinePlayers() {
         // TODO: Implement method
-        return null;
+        List<Player> players = new ArrayList<>();
+        return players;
     }
 
     public static List<Player> getOnlinePlayers() {
@@ -21,6 +23,7 @@ public final class PlayerUtils {
 
     public static int getAlivePlayersCount() {
         // TODO: Implement method
+        // if state == LOBBY_WAITING, LOBBY_COUNTDOWN, GAME_COUNTDOWN or GAME_RESTARTING --> true
         return 0;
     }
 
