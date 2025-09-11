@@ -36,4 +36,3 @@ at\minecraft\pugna\utils\ItemUtils.class
 at\minecraft\pugna\utils\CountdownUtils.class
 at\minecraft\pugna\countdowns\LobbyCountdown.class
 at\minecraft\pugna\world\SpawnGenerator.class
-at\minecraft\pugna\world\NetherPortal.class

@@ -41,7 +41,7 @@ public class ChatListener implements Listener {
                     ChatUtils.broadcast(message);
                 } else {
                     String message = ChatUtils.formatMessage(sender, rawMessage);
-                    ChatUtils.broadcast(message);
+                    ChatUtils.sendTeamMessage(sender, message);
                 }
             }
 

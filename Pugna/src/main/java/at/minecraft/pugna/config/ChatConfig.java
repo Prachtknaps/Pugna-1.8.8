@@ -22,7 +22,7 @@ public final class ChatConfig {
         messages.clear();
 
         /* === General === */
-        messages.put(Message.INVALID_USAGE, getPrefix() + "§cUngültiger Befehl:§r");
+        messages.put(Message.INVALID_USAGE, getPrefix() + "§cUngültige Verwendung des Befehls:§r");
         messages.put(Message.NO_PERMISSION, getPrefix() + "§cDu hast keine Berechtigung, diesen Befehl auszuführen.§r");
         messages.put(Message.PLAYER_ONLY_COMMAND, getRawPrefix() + "Dieser Befehl kann nur von Spielern ausgeführt werden.");
 
@@ -32,6 +32,9 @@ public final class ChatConfig {
         messages.put(Message.COUNTDOWN_NOT_ACTIVE, getPrefix() + "§cAktuell läuft kein Countdown.§r");
         messages.put(Message.COUNTDOWN_UPDATE_SUCCESS, getPrefix() + "§aDer Countdown wurde auf §e{time} §a{unit} gesetzt.§r");
 
+        /* === Hub === */
+        messages.put(Message.HUB_KICK, getPrefix() + "§cDu hast den Server verlassen.§r");
+
         /* === Team === */
         messages.put(Message.TEAM_USAGE, "§7/team list, /team join <name>, /team rename <name>, /team leave§r");
         messages.put(Message.NO_TEAM, getPrefix() + "§cDu befindest dich in keinem Team.§r");
@@ -39,7 +42,7 @@ public final class ChatConfig {
         messages.put(Message.TEAM_RENAME_HINT, "§aDu kannst dein Team mit §e/team rename <name> §aumbenennen.§r");
 
         messages.put(Message.TEAM_LIST_HEADER, getPrefix() + "§aAktuell gibt es folgende Teams:§r");
-        messages.put(Message.TEAM_LIST_ENTRY, "§7- §f{players}§r");
+        messages.put(Message.TEAM_LIST_ENTRY, "§7- §e{team}§7: §f( {players} )§r");
         messages.put(Message.TEAM_LIST_EMPTY, getPrefix() + "§cEs existieren noch keine Teams.§r");
 
         messages.put(Message.TEAM_JOIN_NOT_FOUND, getPrefix() + "§cEs existiert kein Team mit dem Namen §e{team}§c.§r");

@@ -9,6 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class HubCommand implements CommandExecutor {
+    /* === Operations === */
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] arguments) {
         if (!(sender instanceof Player)) {
@@ -18,7 +20,9 @@ public class HubCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        player.kickPlayer("");
+        String message = ChatConfig.getMessage(Message.HUB_KICK);
+        player.kickPlayer(message);
+
         return true;
     }
 }

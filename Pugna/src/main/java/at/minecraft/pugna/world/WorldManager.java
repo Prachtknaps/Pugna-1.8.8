@@ -109,8 +109,7 @@ public class WorldManager {
 
         SpawnGenerator.buildSpawnHoles(pugnaWorld, GameConfig.getMaxTeamsCount(), GameConfig.getMaxTeamCapacity(), radius);
         SpawnGenerator.buildOverworldPortal(pugnaWorld);
-        SpawnGenerator.buildNetherPortal(pugnaNetherWorld);
-        SpawnGenerator.buildSpawnChests(pugnaWorld);
+        SpawnGenerator.buildSpawnChests(pugnaWorld, maxPlayersCount);
 
         Collections.shuffle(teamSpawns);
     }

@@ -12,6 +12,9 @@ public enum Message {
     COUNTDOWN_NOT_ACTIVE,
     COUNTDOWN_UPDATE_SUCCESS,
 
+    /* === Hub === */
+    HUB_KICK,
+
     /* === Team === */
     TEAM_USAGE,
     NO_TEAM,

@@ -21,12 +21,6 @@ public class LobbyCountdown extends BukkitRunnable {
         this.seconds = GameConfig.getLobbyCountdownSeconds();
     }
 
-    /* === Getters === */
-
-    public int getSeconds() {
-        return seconds;
-    }
-
     /* === Operations === */
 
     public void setSeconds(int seconds) {

@@ -47,6 +47,9 @@ public class ChatMessage {
 
     public ChatMessage players(List<Player> players) {
         String names = players.stream().map(Player::getName).collect(Collectors.joining(", "));
+        if (players.isEmpty()) {
+            names = "-";
+        }
         message = message.replace("{players}", names);
         return this;
     }

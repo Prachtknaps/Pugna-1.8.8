@@ -45,10 +45,6 @@ public class Team {
         return players;
     }
 
-    public List<Location> getSpawns() {
-        return spawns;
-    }
-
     public String getName() {
         return name;
     }
@@ -123,9 +119,7 @@ public class Team {
 
         players.remove(player.getUniqueId());
         String playerMessage = ChatConfig.getChatMessage(Message.TEAM_LEAVE_SELF).team(name).toString();
-        String hintMessage = ChatConfig.getMessage(Message.TEAM_JOIN_HINT);
         player.sendMessage(playerMessage);
-        player.sendMessage(hintMessage);
 
         String teamMessage = ChatConfig.getChatMessage(Message.TEAM_LEAVE_OTHERS).player(player.getName()).toString();
         broadcast(teamMessage);
@@ -213,10 +207,6 @@ public class Team {
 
     public boolean isEmpty() {
         return players.isEmpty();
-    }
-
-    public boolean isIncomplete() {
-        return !isEmpty() && players.size() < capacity;
     }
 
     public boolean isFull() {

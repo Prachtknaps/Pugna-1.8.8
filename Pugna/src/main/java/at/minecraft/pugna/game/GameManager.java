@@ -55,6 +55,7 @@ public class GameManager {
         return state;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean allowNether() {
         return allowNether;
     }

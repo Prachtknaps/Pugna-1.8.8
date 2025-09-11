@@ -78,23 +78,9 @@ public final class SpawnGenerator {
 
         OverworldPortal portal = new OverworldPortal(world, centerX, centerZ);
         portal.build();
-        // TODO: Implement method
     }
 
-    public static void buildNetherPortal(World world) {
-        if (world == null) {
-            return;
-        }
-
-        Location spawnLocation = world.getSpawnLocation();
-        int centerX = spawnLocation.getBlockX();
-        int baseY = spawnLocation.getBlockY();
-        int centerZ = spawnLocation.getBlockZ();
-
-        // TODO: Implement method
-    }
-
-    public static void buildSpawnChests(World world) {
+    public static void buildSpawnChests(World world, int playerCount) {
         if (world == null) {
             return;
         }

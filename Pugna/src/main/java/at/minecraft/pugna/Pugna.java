@@ -13,6 +13,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/*
+* TODO:
+*  - Block forbidden items
+*  - Place spawn chests
+*  - Fill spawn chests
+*  - Scoreboard in gameTimer
+* */
+
 public final class Pugna extends JavaPlugin {
     private static Pugna instance;
 
@@ -48,7 +56,7 @@ public final class Pugna extends JavaPlugin {
         /* === Commands === */
         getCommand("countdown").setExecutor(new CountdownCommand(gameManager));
         getCommand("hub").setExecutor(new HubCommand());
-        getCommand("team").setExecutor(new TeamCommand());
+        getCommand("team").setExecutor(new TeamCommand(gameManager));
 
         /* === Logging === */
         Bukkit.getLogger().info(ChatConfig.getRawPrefix() + "The plugin has been enabled.");
