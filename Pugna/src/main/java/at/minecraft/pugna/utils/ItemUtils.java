@@ -8,8 +8,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
-import java.util.Map;
-
 public final class ItemUtils {
     private ItemUtils() {}
 
@@ -41,44 +39,83 @@ public final class ItemUtils {
 
     private static boolean hasBannedEnchantments(ItemStack itemStack) {
         /* === Enchanted Books === */
-        if (itemStack.getType() == Material.ENCHANTED_BOOK && itemStack.hasItemMeta()) {
+        if (itemStack.getType() == Material.ENCHANTED_BOOK) {
             ItemMeta meta = itemStack.getItemMeta();
             if (meta instanceof EnchantmentStorageMeta) {
-                for (Enchantment enchantment : ((EnchantmentStorageMeta) meta).getStoredEnchants().keySet()) {
-                    if (isBannedEnchantment(enchantment)) {
-                        return true;
-                    }
+                EnchantmentStorageMeta storageMeta = (EnchantmentStorageMeta) meta;
+
+                if (storageMeta.hasStoredEnchant(Enchantment.FIRE_ASPECT)) {
+                    return true;
                 }
+                if (storageMeta.hasStoredEnchant(Enchantment.THORNS)) {
+                    return true;
+                }
+                if (storageMeta.hasStoredEnchant(Enchantment.DEPTH_STRIDER)) {
+                    return true;
+                }
+                if (storageMeta.hasStoredEnchant(Enchantment.ARROW_FIRE)) {
+                    return true;
+                }
+                if (storageMeta.hasStoredEnchant(Enchantment.ARROW_INFINITE)) {
+                    return true;
+                }
+            }
+
+            if (meta != null) {
+                if (meta.hasEnchant(Enchantment.FIRE_ASPECT)) {
+                    return true;
+                }
+                if (meta.hasEnchant(Enchantment.THORNS)) {
+                    return true;
+                }
+                if (meta.hasEnchant(Enchantment.DEPTH_STRIDER)) {
+                    return true;
+                }
+                if (meta.hasEnchant(Enchantment.ARROW_FIRE)) {
+                    return true;
+                }
+                if (meta.hasEnchant(Enchantment.ARROW_INFINITE)) {
+                    return true;
+                }
+            }
+
+            if (itemStack.getEnchantmentLevel(Enchantment.FIRE_ASPECT) > 0) {
+                return true;
+            }
+            if (itemStack.getEnchantmentLevel(Enchantment.THORNS) > 0) {
+                return true;
+            }
+            if (itemStack.getEnchantmentLevel(Enchantment.DEPTH_STRIDER) > 0) {
+                return true;
+            }
+            if (itemStack.getEnchantmentLevel(Enchantment.ARROW_FIRE) > 0) {
+                return true;
+            }
+            if (itemStack.getEnchantmentLevel(Enchantment.ARROW_INFINITE) > 0) {
+                return true;
             }
         }
 
         /* === Other Items === */
-        if (!itemStack.hasItemMeta()) {
-            return false;
+        if (itemStack.getEnchantmentLevel(Enchantment.FIRE_ASPECT) > 0) {
+            return true;
+        }
+        if (itemStack.getEnchantmentLevel(Enchantment.THORNS) > 0) {
+            return true;
+        }
+        if (itemStack.getEnchantmentLevel(Enchantment.DEPTH_STRIDER) > 0) {
+            return true;
+        }
+        if (itemStack.getEnchantmentLevel(Enchantment.ARROW_FIRE) > 0) {
+            return true;
+        }
+        if (itemStack.getEnchantmentLevel(Enchantment.ARROW_INFINITE) > 0) {
+            return true;
         }
 
-        Map<Enchantment, Integer> enchantments = itemStack.getItemMeta().getEnchants();
-        if (enchantments == null || enchantments.isEmpty()) {
-            return false;
-        }
-
-        for (Enchantment enchantment : enchantments.keySet()) {
-            if (isBannedEnchantment(enchantment)) {
-                return true;
-            }
-        }
         return false;
     }
 
-    private static boolean isBannedEnchantment(Enchantment enchantment) {
-        return (
-            enchantment == Enchantment.THORNS ||
-            enchantment == Enchantment.DEPTH_STRIDER ||
-            enchantment == Enchantment.FIRE_ASPECT ||
-            enchantment == Enchantment.ARROW_FIRE ||
-            enchantment == Enchantment.ARROW_INFINITE
-        );
-    }
 
     private static boolean isPotion(ItemStack itemStack) {
         return itemStack.getType() == Material.POTION;

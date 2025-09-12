@@ -127,6 +127,7 @@ public class GameTimer extends BukkitRunnable {
             if (removed > 0) {
                 String message = ChatConfig.getChatMessage(Message.FORBIDDEN_ITEMS_REMOVED).count(removed).toString();
                 player.sendMessage(message);
+                player.updateInventory();
             }
         }
     }
