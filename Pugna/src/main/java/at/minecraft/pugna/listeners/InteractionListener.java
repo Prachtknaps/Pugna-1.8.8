@@ -1,10 +1,14 @@
 package at.minecraft.pugna.listeners;
 
+import at.minecraft.pugna.config.GameConfig;
 import at.minecraft.pugna.game.GameManager;
 import at.minecraft.pugna.game.GameState;
+import at.minecraft.pugna.gui.NavigationGUI;
+import at.minecraft.pugna.gui.TeamSelectionGUI;
 import at.minecraft.pugna.utils.PlayerUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -16,6 +20,7 @@ import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class InteractionListener implements Listener {
     private final GameManager gameManager;
@@ -35,7 +40,33 @@ public class InteractionListener implements Listener {
             return;
         }
 
-        // TODO: Team Selection, Leave and Navigation
+        /* === Team Selection === */
+        if (state == GameState.LOBBY_WAITING || state == GameState.LOBBY_COUNTDOWN) {
+            ItemStack itemInHand = event.getItem();
+            if (itemInHand != null && itemInHand.getType() == Material.BED && itemInHand.hasItemMeta() && itemInHand.getItemMeta().hasDisplayName() && itemInHand.getItemMeta().getDisplayName().equals(GameConfig.getTeamSelectionItemName())) {
+                event.setCancelled(true);
+                TeamSelectionGUI.openFor(player);
+                return;
+            }
+        }
+
+        /* === Navigation === */
+        if ((state == GameState.GAME_COUNTDOWN || state == GameState.GAME_RUNNING || state == GameState.GAME_PAUSED) && PlayerUtils.isSpectator(player)) {
+            ItemStack itemInHand = event.getItem();
+            if (itemInHand != null && itemInHand.getType() == Material.COMPASS && itemInHand.hasItemMeta() && itemInHand.getItemMeta().hasDisplayName() && itemInHand.getItemMeta().getDisplayName().equals(GameConfig.getNavigationItemName())) {
+                event.setCancelled(true);
+                NavigationGUI.openFor(player);
+                return;
+            }
+        }
+
+        /* === Leave === */
+        ItemStack itemInHand = event.getItem();
+        if (itemInHand != null && itemInHand.getType() == Material.MAGMA_CREAM && itemInHand.hasItemMeta() && itemInHand.getItemMeta().hasDisplayName() && itemInHand.getItemMeta().getDisplayName().equals(GameConfig.getLeaveItemName())) {
+            event.setCancelled(true);
+            player.performCommand("hub");
+            return;
+        }
 
         if (PlayerUtils.isSpectator(player)) {
             event.setCancelled(true);

@@ -15,6 +15,7 @@ at\minecraft\pugna\world\ChestManager.class
 at\minecraft\pugna\countdowns\RestartCountdown.class
 at\minecraft\pugna\listeners\BlockListener.class
 at\minecraft\pugna\listeners\DamageListener.class
+at\minecraft\pugna\gui\NavigationGUI.class
 at\minecraft\pugna\countdowns\GameCountdown.class
 at\minecraft\pugna\world\PlayerSpawn.class
 at\minecraft\pugna\utils\BlockUtils.class
@@ -29,6 +30,7 @@ at\minecraft\pugna\utils\FileSystemUtils.class
 at\minecraft\pugna\world\PugnaSeed.class
 at\minecraft\pugna\world\WorldManager.class
 at\minecraft\pugna\commands\TeamCommand.class
+at\minecraft\pugna\gui\TeamSelectionGUI.class
 at\minecraft\pugna\Pugna.class
 at\minecraft\pugna\listeners\WorldListener.class
 at\minecraft\pugna\teams\Team.class

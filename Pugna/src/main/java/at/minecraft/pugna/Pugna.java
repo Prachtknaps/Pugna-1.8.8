@@ -15,7 +15,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /*
 * TODO:
-*  - Implement Team Selection Item, Navigation Item and Leave Item
 *  - Scoreboard in gameTimer
 * */
 
