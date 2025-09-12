@@ -5,6 +5,8 @@ authors: [ DerStresser ]
 commands:
   countdown:
     description: "Allows you to change the countdown seconds."
+  gui:
+    description: "Lets you enable/disable the gui."
   hub:
     description: "Lets you leave the server."
   team:

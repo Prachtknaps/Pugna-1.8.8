@@ -32,6 +32,11 @@ public final class ChatConfig {
         messages.put(Message.COUNTDOWN_NOT_ACTIVE, getPrefix() + "§cAktuell läuft kein Countdown.§r");
         messages.put(Message.COUNTDOWN_UPDATE_SUCCESS, getPrefix() + "§aDer Countdown wurde auf §e{time} §a{unit} gesetzt.§r");
 
+        /* === GUI === */
+        messages.put(Message.GUI_USAGE, "§7/gui enable/disable§r");
+        messages.put(Message.GUI_ENABLED, getPrefix() + "§aDeine GUI wurde aktiviert.§r");
+        messages.put(Message.GUI_DISABLED, getPrefix() + "§cDeine GUI wurde deaktiviert.§r");
+
         /* === Hub === */
         messages.put(Message.HUB_KICK, getPrefix() + "§cDu hast den Server verlassen.§r");
 
@@ -51,9 +56,11 @@ public final class ChatConfig {
         messages.put(Message.TEAM_JOIN_SELF, getPrefix() + "§aDu bist dem Team §e{team} §abeigetreten.§r");
         messages.put(Message.TEAM_JOIN_OTHERS, getPrefix() + "§e{player} §aist deinem Team beigetreten.§r");
 
+        messages.put(Message.TEAM_LEAVE_NOT_ALLOWED, getPrefix() + "§cDu kannst dein Team nicht mehr verlassen.§r");
         messages.put(Message.TEAM_LEAVE_SELF, getPrefix() + "§cDu hast das Team §e{team} §cverlassen.§r");
         messages.put(Message.TEAM_LEAVE_OTHERS, getPrefix() + "§e{player} §chat dein Team verlassen.§r");
 
+        messages.put(Message.TEAM_RENAME_NOT_ALLOWED, getPrefix() + "§cDu kannst dein Team nicht mehr umbenennen.§r");
         messages.put(Message.TEAM_RENAME_INVALID, getPrefix() + "§cEin Team-Name darf nur aus Buchstaben und Zahlen bestehen und zwischen 4 und 16 Zeichen lang sein.§r");
         messages.put(Message.TEAM_RENAME_SAME_NAME, getPrefix() + "§cDein Team heißt bereits §e{team}§c.§r");
         messages.put(Message.TEAM_RENAME_TAKEN, getPrefix() + "§cEs existiert bereits ein Team mit diesem Namen.§r");
@@ -65,6 +72,7 @@ public final class ChatConfig {
         messages.put(Message.TEAM_ELIMINATED, "§cDas Team §e{team} §cwurde ausgelöscht.§r");
         messages.put(Message.TEAM_WIN, getPrefix() + "§aDas Team §e{team} §ahat §ePugna §agewonnen.§r");
 
+        messages.put(Message.TEAM_JOIN_NOT_ALLOWED, getPrefix() + "§cDu kannst keinem Team mehr beitreten.§r");
         messages.put(Message.PLAYER_JOIN, "§f» §e{player} §7hat den Server betreten.§r");
         messages.put(Message.PLAYER_QUIT, "§f» §e{player} §7hat den Server verlassen.§r");
         messages.put(Message.PLAYER_DEATH_SELF, "§cDu bist gestorben.§r");

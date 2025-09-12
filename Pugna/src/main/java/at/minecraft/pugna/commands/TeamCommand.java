@@ -3,7 +3,9 @@ package at.minecraft.pugna.commands;
 import at.minecraft.pugna.chat.Message;
 import at.minecraft.pugna.config.ChatConfig;
 import at.minecraft.pugna.game.GameManager;
+import at.minecraft.pugna.game.GameState;
 import at.minecraft.pugna.teams.Team;
+import at.minecraft.pugna.utils.PlayerUtils;
 import at.minecraft.pugna.utils.TeamUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -141,6 +143,13 @@ public class TeamCommand implements CommandExecutor {
     }
 
     private void handleTeamJoin(Player player, String name) {
+        GameState state = gameManager.getState();
+        if ((state != GameState.LOBBY_WAITING && state != GameState.LOBBY_COUNTDOWN) || PlayerUtils.isSpectator(player)) {
+            String message = ChatConfig.getMessage(Message.TEAM_JOIN_NOT_ALLOWED);
+            player.sendMessage(message);
+            return;
+        }
+
         Team targetTeam = TeamUtils.getTeam(name);
         if (targetTeam == null) {
             String message = ChatConfig.getChatMessage(Message.TEAM_JOIN_NOT_FOUND).team(name).toString();
@@ -172,6 +181,13 @@ public class TeamCommand implements CommandExecutor {
             return;
         }
 
+        GameState state = gameManager.getState();
+        if (state != GameState.LOBBY_WAITING && state != GameState.LOBBY_COUNTDOWN) {
+            String message = ChatConfig.getMessage(Message.TEAM_RENAME_NOT_ALLOWED);
+            player.sendMessage(message);
+            return;
+        }
+
         Team existingTeam = TeamUtils.getTeam(name);
         if (existingTeam != null) {
             String message;
@@ -190,6 +206,13 @@ public class TeamCommand implements CommandExecutor {
         Team team = TeamUtils.getTeam(player);
         if (team == null) {
             String message = ChatConfig.getMessage(Message.NO_TEAM);
+            player.sendMessage(message);
+            return;
+        }
+
+        GameState state = gameManager.getState();
+        if (state != GameState.LOBBY_WAITING && state != GameState.LOBBY_COUNTDOWN) {
+            String message = ChatConfig.getMessage(Message.TEAM_LEAVE_NOT_ALLOWED);
             player.sendMessage(message);
             return;
         }

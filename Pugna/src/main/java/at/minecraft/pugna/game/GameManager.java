@@ -72,6 +72,10 @@ public class GameManager {
         return gameCountdown;
     }
 
+    public GameTimer getGameTimer() {
+        return gameTimer;
+    }
+
     /* === Operations === */
 
     public void setAllowNether(boolean allowNether) {

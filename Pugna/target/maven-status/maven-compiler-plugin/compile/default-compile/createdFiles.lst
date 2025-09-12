@@ -1,5 +1,6 @@
 at\minecraft\pugna\listeners\PortalListener.class
 at\minecraft\pugna\utils\PlayerUtils.class
+at\minecraft\pugna\commands\GuiCommand.class
 at\minecraft\pugna\chat\ChatMessage.class
 at\minecraft\pugna\world\SpawnChest.class
 at\minecraft\pugna\game\GameManager.class

@@ -1,6 +1,7 @@
 package at.minecraft.pugna;
 
 import at.minecraft.pugna.commands.CountdownCommand;
+import at.minecraft.pugna.commands.GuiCommand;
 import at.minecraft.pugna.commands.HubCommand;
 import at.minecraft.pugna.commands.TeamCommand;
 import at.minecraft.pugna.config.ChatConfig;
@@ -12,11 +13,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-/*
-* TODO:
-*  - Scoreboard in gameTimer
-* */
 
 public final class Pugna extends JavaPlugin {
     private static Pugna instance;
@@ -52,6 +48,7 @@ public final class Pugna extends JavaPlugin {
 
         /* === Commands === */
         getCommand("countdown").setExecutor(new CountdownCommand(gameManager));
+        getCommand("gui").setExecutor(new GuiCommand(gameManager));
         getCommand("hub").setExecutor(new HubCommand());
         getCommand("team").setExecutor(new TeamCommand(gameManager));
 

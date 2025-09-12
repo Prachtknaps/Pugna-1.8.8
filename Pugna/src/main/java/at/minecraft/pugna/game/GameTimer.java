@@ -12,7 +12,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class GameTimer extends BukkitRunnable {
@@ -32,6 +37,8 @@ public class GameTimer extends BukkitRunnable {
     private final int enemyRevealWarnStartSeconds;
     private final int gameEndWarnStartSeconds;
 
+    private final List<UUID> blockedGUIPlayers;
+
     public GameTimer(WorldManager worldManager, GameManager gameManager) {
         this.worldManager = worldManager;
         this.gameManager = gameManager;
@@ -48,6 +55,8 @@ public class GameTimer extends BukkitRunnable {
         this.netherEndWarnStartSeconds = GameConfig.getNetherEndWarnStartSeconds();
         this.enemyRevealWarnStartSeconds = GameConfig.getEnemyRevealWarnStartSeconds();
         this.gameEndWarnStartSeconds = GameConfig.getGameEndWarnStartSeconds();
+
+        this.blockedGUIPlayers = new ArrayList<>();
     }
 
     /* === Operations === */
@@ -58,10 +67,11 @@ public class GameTimer extends BukkitRunnable {
 
     @Override
     public void run() {
+        handleGUI();
+
         if (seconds % 10 == 0) {
             handleForbiddenItemRemove();
-        }
-        else if (seconds == netherStartSeconds) {
+        } else if (seconds == netherStartSeconds) {
             handleNetherStart();
         } else if (seconds >= borderShrinkWarnStartSeconds && seconds < borderShrinkStartSeconds) {
             handleBorderShrinkWarning(seconds);
@@ -91,6 +101,75 @@ public class GameTimer extends BukkitRunnable {
         } else {
             seconds++;
         }
+    }
+
+    private void handleGUI() {
+        for (Player player : PlayerUtils.getAllOnlinePlayers()) {
+            if (blockedGUIPlayers.contains(player.getUniqueId())) continue;
+
+            ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
+            if (scoreboardManager == null) {
+                continue;
+            }
+
+            Scoreboard scoreboard = scoreboardManager.getNewScoreboard();
+            Objective objective = scoreboard.registerNewObjective("pugna", "dummy");
+            objective.setDisplaySlot(org.bukkit.scoreboard.DisplaySlot.SIDEBAR);
+            objective.setDisplayName("§6§lPugna");
+
+            final int teamsCount = gameManager.getTeams().size();
+
+            final String nextName = getNextEventName();
+            final int nextIn = getNextEventSeconds();
+
+            int s = 13;
+
+            objective.getScore("§eZeit").setScore(s--);
+            objective.getScore("§f" + CountdownUtils.getTime(seconds) + " " + CountdownUtils.getUnit(seconds)).setScore(s--);
+            objective.getScore("§0").setScore(s--);
+
+            objective.getScore("§eTeams").setScore(s--);
+            objective.getScore("§f" + teamsCount + " §7(" + PlayerUtils.getOnlinePlayers().size() + " Spieler)" ).setScore(s--);
+            objective.getScore("§1").setScore(s--);
+
+            objective.getScore("§eNächstes Event").setScore(s--);
+            objective.getScore("§d§l" + nextName).setScore(s--);
+            String nextTime = (nextIn > 0)
+                    ? (CountdownUtils.getTime(nextIn) + " " + CountdownUtils.getUnit(nextIn))
+                    : "-";
+            objective.getScore("§7" + nextTime).setScore(s--);
+            objective.getScore("§2").setScore(s--);
+
+            player.setScoreboard(scoreboard);
+        }
+    }
+
+    private String getNextEventName() {
+        if (seconds < netherStartSeconds) return "Nether";
+        if (seconds < borderShrinkStartSeconds) return "Border";
+        if (seconds < borderShrinkEndSeconds) return "Border End";
+        if (seconds < netherEndSeconds) return "Nether Ende";
+        if (seconds < enemyRevealSeconds) return "Reveal";
+        if (seconds < gameEndSeconds) return "Ende";
+        return "-";
+    }
+
+    private int getNextEventSeconds() {
+        if (seconds < netherStartSeconds) return netherStartSeconds - seconds;
+        if (seconds < borderShrinkStartSeconds) return borderShrinkStartSeconds - seconds;
+        if (seconds < borderShrinkEndSeconds) return borderShrinkEndSeconds - seconds;
+        if (seconds < netherEndSeconds) return netherEndSeconds - seconds;
+        if (seconds < enemyRevealSeconds) return enemyRevealSeconds - seconds;
+        if (seconds < gameEndSeconds) return gameEndSeconds - seconds;
+        return 0;
+    }
+
+    public void enableGUIFor(Player player) {
+        blockedGUIPlayers.remove(player.getUniqueId());
+    }
+
+    public void disableGUIFor(Player player) {
+        blockedGUIPlayers.add(player.getUniqueId());
     }
 
     private void handleForbiddenItemRemove() {
