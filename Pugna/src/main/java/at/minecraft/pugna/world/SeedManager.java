@@ -16,6 +16,7 @@ public class SeedManager {
 
         seeds.add(new PugnaSeed(-962001721392497129L, WorldType.NORMAL, getRadius(4), getRadius(16)));
         seeds.add(new PugnaSeed(-9008001471532830816L, WorldType.NORMAL, getRadius(4), getRadius(32)));
+        seeds.add(new PugnaSeed(-4906307494297548254L, WorldType.NORMAL, getRadius(4), getRadius(64)));
         seeds.add(new PugnaSeed(-2143667004870707025L, WorldType.NORMAL, getRadius(4), getRadius(32)));
         seeds.add(new PugnaSeed(1729687638268160097L, WorldType.NORMAL, getRadius(4), getRadius(16)));
         seeds.add(new PugnaSeed(527616680074691L, WorldType.NORMAL, getRadius(8), getRadius(32)));
