@@ -67,7 +67,6 @@ public final class TeamUtils {
     /* === Operations === */
 
     public static void assignPlayers() {
-        // TODO: Implement method
         List<Player> playersToAssign = new ArrayList<>();
         for (Player player : PlayerUtils.getAllOnlinePlayers()) {
             if (getTeam(player) == null) {
