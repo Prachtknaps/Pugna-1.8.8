@@ -138,7 +138,7 @@ public class GameTimer extends BukkitRunnable {
             String nextTime = (nextIn > 0)
                     ? (CountdownUtils.getTime(nextIn) + " " + CountdownUtils.getUnit(nextIn))
                     : "-";
-            objective.getScore("§7" + nextTime).setScore(s--);
+            objective.getScore("§f" + nextTime).setScore(s--);
             objective.getScore("§2").setScore(s--);
 
             player.setScoreboard(scoreboard);
