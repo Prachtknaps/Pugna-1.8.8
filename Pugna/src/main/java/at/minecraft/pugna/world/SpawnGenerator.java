@@ -85,6 +85,38 @@ public final class SpawnGenerator {
             return;
         }
 
-        // TODO: Implement method
+        Location spawnLocation = world.getSpawnLocation();
+        int centerX = spawnLocation.getBlockX();
+        int centerZ = spawnLocation.getBlockZ();
+
+        List<SpawnChest> spawnChests = new ArrayList<>();
+
+        if (playerCount < 16) {
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, 3, 6));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, -3, 6));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, -7, 2));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, -7, -2));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, -3, -6));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, 3, -6));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, 7, -2));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, 7, 2));
+        } else {
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, 3, 5));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, 0, 6));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, -3, 5));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, -6, 3));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, -7, 0));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, -6, -3));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, -3, -5));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, 0, -6));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, 3, -5));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, 6, -3));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, 7, 0));
+            spawnChests.add(new SpawnChest(world, centerX, centerZ, 6, 3));
+        }
+
+        for (SpawnChest spawnChest : spawnChests) {
+            spawnChest.build();
+        }
     }
 }
