@@ -17,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 * TODO:
 *  - Place spawn chests
 *  - Fill spawn chests
+*  - Implement Team Selection Item, Navigation Item and Leave Item
 *  - Scoreboard in gameTimer
 * */
 
