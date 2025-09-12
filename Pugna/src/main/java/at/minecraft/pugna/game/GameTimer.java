@@ -104,11 +104,12 @@ public class GameTimer extends BukkitRunnable {
     }
 
     private void handleGUI() {
-        for (Player player : PlayerUtils.getAllOnlinePlayers()) {
-            if (blockedGUIPlayers.contains(player.getUniqueId())) continue;
+        ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
+        if (scoreboardManager == null) return;
 
-            ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
-            if (scoreboardManager == null) {
+        for (Player player : PlayerUtils.getAllOnlinePlayers()) {
+            if (blockedGUIPlayers.contains(player.getUniqueId())) {
+                player.setScoreboard(scoreboardManager.getNewScoreboard());
                 continue;
             }
 
@@ -129,11 +130,11 @@ public class GameTimer extends BukkitRunnable {
             objective.getScore("§0").setScore(s--);
 
             objective.getScore("§eTeams").setScore(s--);
-            objective.getScore("§f" + teamsCount + " §7(" + PlayerUtils.getOnlinePlayers().size() + " Spieler)" ).setScore(s--);
+            objective.getScore("§f" + teamsCount + " §7(" + PlayerUtils.getOnlinePlayers().size() + " Spieler)").setScore(s--);
             objective.getScore("§1").setScore(s--);
 
             objective.getScore("§eNächstes Event").setScore(s--);
-            objective.getScore("§d§l" + nextName).setScore(s--);
+            objective.getScore("§d" + nextName).setScore(s--);
             String nextTime = (nextIn > 0)
                     ? (CountdownUtils.getTime(nextIn) + " " + CountdownUtils.getUnit(nextIn))
                     : "-";
