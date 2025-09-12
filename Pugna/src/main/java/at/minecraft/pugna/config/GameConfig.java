@@ -69,6 +69,9 @@ public final class GameConfig {
     public static void setup(FileConfiguration configuration) {
         isLongGame = true;
         allowReconnect = true;
+        if (isLongGame) {
+            allowReconnect = true;
+        }
         friendlyFire = false;
 
         maxTeamsCount = 16;
@@ -82,7 +85,9 @@ public final class GameConfig {
                 "eZClap", "TNTGang", "KillStreak", "Rasur", "Terror", "Critters", "Sweat99", "SpawnTrap",
                 "NoSkill", "Skillaura", "eZWin", "TeamOP", "Laggers", "QuickScope", "SwordZ", "CritHit",
                 "WomboCombo", "Gapplers", "Ping999", "FirstKill", "FirstBlood", "BowSpammer", "Klatsche", "Abriss",
-                "Zerstoerer", "Pruegler", "Drescher", "HauDrauf", "Schnetzler", "Watsche", "KlickSpeed", "AutoKlicker"
+                "Zerstoerer", "Pruegler", "Drescher", "HauDrauf", "Schnetzler", "Watsche", "KlickSpeed", "AutoKlicker",
+                "BlitzGang", "SkullCrush", "RageMode", "PixelCrew", "Blocklords", "TNTKings", "SwordMania", "CritCrew",
+                "FlameBros", "Knockback", "PvPGoetter", "FastClick", "DoubleHit", "SpeedHit", "IronGang", "VoidRiders"
         );
         Collections.shuffle(defaultTeamNames);
 
