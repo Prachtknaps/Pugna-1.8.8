@@ -226,6 +226,7 @@ public class GameManager {
             }
 
             TeamUtils.removeEmptyTeams();
+            GameConfig.saveTeams(teams);
             checkForWinner();
         }
     }
