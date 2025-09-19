@@ -182,8 +182,6 @@ public class WorldManager {
     private World setupLobbyWorld() {
         World world = Bukkit.getWorld(GameConfig.getLobbyWorldName());
         if (world == null) {
-            Bukkit.getLogger().info("Setting up lobby world");
-
             WorldCreator worldCreator = new WorldCreator(GameConfig.getLobbyWorldName());
             worldCreator.environment(World.Environment.NORMAL).seed(pugnaSeed.getSeed()).type(WorldType.FLAT).generateStructures(false);
             world = Bukkit.createWorld(worldCreator);
@@ -216,8 +214,6 @@ public class WorldManager {
     private World setupPugnaWorld() {
         World world = Bukkit.getWorld(GameConfig.getPugnaWorldName());
         if (world == null) {
-            Bukkit.getLogger().info("Setting up pugna world");
-
             WorldCreator worldCreator = new WorldCreator(GameConfig.getPugnaWorldName());
             worldCreator.environment(World.Environment.NORMAL).seed(pugnaSeed.getSeed()).type(pugnaSeed.getWorldType()).generateStructures(true);
             world = Bukkit.createWorld(worldCreator);
@@ -250,8 +246,6 @@ public class WorldManager {
     private World setupPugnaNetherWorld() {
         World world = Bukkit.getWorld(GameConfig.getPugnaNetherWorldName());
         if (world == null) {
-            Bukkit.getLogger().info("Setting up pugna nether world");
-
             WorldCreator worldCreator = new WorldCreator(GameConfig.getPugnaNetherWorldName());
             worldCreator.environment(World.Environment.NETHER).seed(pugnaSeed.getSeed()).type(pugnaSeed.getWorldType()).generateStructures(true);
             world = Bukkit.createWorld(worldCreator);
