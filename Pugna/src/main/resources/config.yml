@@ -1,0 +1,171 @@
+game:
+  development: false
+  running: false
+  seconds: 0
+  game_time: 0
+  protected_areas: {}
+
+players:
+  friendly_fire: false
+  max_teams_count: 16
+  max_team_capacity: 1
+  min_players_count: 2
+  default_team_names: [
+    "Abriss", "Alpha", "AutoKlicker",
+    "BlitzGang", "BlockHitters", "Blocklords", "BowSpammer", "Bravo",
+    "Campers", "Chaos", "ChickenKillers", "Clowns", "ComboGods", "CritCrew", "CritHit", "Critters",
+    "Delta", "DoubleHit", "Drescher",
+    "Echo", "eZClap", "eZWin",
+    "Farmers", "FastClick", "FirstBlood", "FirstKill", "FlameBros",
+    "Gapplers", "GGWP",
+    "HackClient", "Hackers", "HauDrauf", "Hunters",
+    "Inferno", "IronGang",
+    "Killaura", "KillStreak", "Klatsche", "KlickSpeed", "Knockback",
+    "Laggers",
+    "MelonGang",
+    "Nodus", "Noobs", "NoSkill",
+    "Phantom", "Ping999", "PixelCrew", "PotatoArmy", "Pruegler", "PvPGoetter",
+    "QuickScope",
+    "RageMode", "Rasur", "Rekt", "RiskTakers",
+    "Schnetzler", "Shadow", "Skillaura", "SkullCrush", "SpawnTrap", "SpeedHit", "Storm", "Sweat99", "SwordMania", "SwordZ",
+    "TeamKill", "TeamOP", "Terror", "Titan", "TNTGang", "TNTKings", "TrapMasters", "TryHard",
+    "VoidRiders",
+    "Warriors", "Watsche", "WomboCombo",
+    "XRay",
+    "Zerstoerer"
+  ]
+  teams: {}
+
+lobby:
+  world: "lobby"
+  spawn:
+    x: 0.5
+    y: 64.0
+    z: 0.5
+    yaw: 0.0
+    pitch: 0.0
+
+pugna:
+  world: "pugna"
+  world_nether: "pugna_nether"
+  spawn:
+    x: 0.5
+    # y will be calculated
+    z: 0.5
+    yaw: 0.0
+    pitch: 0.0
+
+border:
+  size: 0.0
+  base_size: 2048.0
+  end_size: 256.0
+  max_size: 4096.0
+  size_per_player: 64.0
+
+countdowns:
+  lobby_countdown_seconds: 60
+  game_countdown_seconds: 40
+  restart_countdown_seconds: 25
+
+events:
+  nether_start:
+    countdown_start_seconds: 3600     # 01:00:00
+    event_seconds: 5400               # 01:30:00
+  border_shrink:
+    countdown_start_seconds: 12600    # 03:30:00
+    event_start_seconds: 14400        # 04:00:00
+    event_end_seconds: 36000          # 10:00:00
+  nether_end:
+    countdown_start_seconds: 41400    # 11:30:00
+    event_seconds: 43200              # 12:00:00
+  enemy_reveal:
+    countdown_start_seconds: 48600    # 13:30:00
+    event_seconds: 50400              # 14:00:00
+  game_end:
+    countdown_start_seconds: 55800    # 15:30:00
+    event_seconds: 57600              # 16:00:00
+
+item_names:
+  team_selection_item: "§aTeam-Auswahl§r"
+  navigation_item: "§6Navigation§r"
+  leave_item: "§cVerlassen§r"
+
+chat:
+  prefix: "§7[§6Pugna§7]§r"
+  messages:
+    # General
+    invalid_usage: "§cUngültige Verwendung des Befehls:§r"
+    no_permission: "§cDu hast keine Berechtigung, diesen Befehl auszuführen.§r"
+    players_only_command: "Dieser Befehl kann nur von Spielern ausgeführt werden."
+    invalid_number: "§cBitte gib eine gültige Zahl ein.§r"
+    no_team: "§cDu befindest dich in keinem Team.§r"
+    # Countdown
+    countdown_usage: "§7/countdown set <seconds>"
+    countdown_not_active: "§cAktuell läuft kein Countdown.§r"
+    countdown_update_success: "§aDer Countdown wurde auf §e{time} §a{unit} gesetzt.§r"
+    # GUI
+    gui_usage: "§7/gui enable/disable§r"
+    gui_enabled: "§aDeine GUI wurde aktiviert.§r"
+    gui_disabled: "§cDeine GUI wurde deaktiviert.§r"
+    # Team
+    team_usage: "§7/team list, /team join <name>, /team rename <name>, /team leave§r"
+    team_join_hint: "§aDu kannst einem Team mit §e/team join <name> §abeitreten.§r"
+    team_rename_hint: "§aDu kannst dein Team mit §e/team rename <name> §aumbenennen.§r"
+    team_list_header: "§aAktuell gibt es folgende Teams:§r"
+    team_list_entry: "§7- §e{team}§7: §f( {players} )§r"
+    team_list_empty: "§cEs existieren noch keine Teams.§r"
+    team_join_not_allowed: "§cDu kannst keinem Team mehr beitreten.§r"
+    team_join_not_found: "§cEs existiert kein Team mit dem Namen §e{team}§c.§r"
+    team_join_same_team: "§cDu befindest dich bereits in diesem Team.§r"
+    team_join_full: "§cDieses Team ist bereits voll.§r"
+    team_join_self: "§aDu bist dem Team §e{team} §abeigetreten.§r"
+    team_join_others: "§e{player} §aist deinem Team beigetreten.§r"
+    team_leave_not_allowed: "§cDu kannst dein Team nicht mehr verlassen.§r"
+    team_leave_self: "§cDu hast das Team §e{team} §cverlassen.§r"
+    team_leave_others: "§e{player} §chat dein Team verlassen.§r"
+    team_rename_not_allowed: "§cDu kannst dein Team nicht mehr umbenennen.§r"
+    team_rename_invalid: "§cEin Team-Name darf nur aus Buchstaben und Zahlen bestehen und zwischen 4 und 16 Zeichen lang sein.§r"
+    team_rename_same_name: "§cDein Team heißt bereits §e{team}§c.§r"
+    team_rename_taken: "§cEs existiert bereits ein Team mit diesem Namen.§r"
+    team_rename_success: "§aDein Team wurde in §e{team} §aumbenannt.§r"
+    team_assigned: "§aDu wurdest dem Team §e{team} §azugewiesen.§r"
+    team_not_assigned: "§cDu konntest keinem Team zugewiesen werden (keine freien Teams verfügbar).§r"
+    team_teleport: "§aDu wurdest teleportiert.§r"
+    team_eliminated: "§cDas Team §e{team} §cwurde ausgelöscht.§r"
+    team_win: "§aDas Team §e{team} §ahat §ePugna §agewonnen.§r"
+    # Player
+    player_join: "§f» §e{player} §7hat den Server betreten.§r"
+    player_quit: "§f» §e{player} §7hat den Server verlassen.§r"
+    player_death_self: "§cDu bist gestorben.§r"
+    player_death_others: "§e{player} §7ist gestorben.§r"
+    player_killed_self: "§cDu wurdest von §e{killer} §7({health}§7) §cgetötet.§r"
+    player_killed_others: "§e{player} §7wurde von §e{killer} §7getötet.§r"
+    player_win: "§e{player} §ahat §ePugna §agewonnen.§r"
+    # Phases
+    teleport_countdown: "§3Die Spieler werden in §e{time} §3{unit} teleportiert.§r"
+    teleport_countdown_aborted: "§cDer Countdown wurde abgebrochen - warte auf weitere Spieler.§r"
+    game_start_countdown: "§3Das Spiel beginnt in §e{time} §3{unit}.§r"
+    game_start: "§aMögen die Spiele beginnen!§r"
+    game_paused: "§cDas Spiel ist derzeit pausiert. Bitte warte, bis mehr als die Hälfte der lebenden Spieler online ist.§r"
+    game_resumed: "§aDas Spiel wird nun wieder fortgesetzt.§r"
+    forbidden_items_removed: "§cEs wurden verbotene Items aus deinem Inventar entfernt §7(§e{count} Stück§7)§c.§r"
+    nether_teleport_not_allowed: "§cDer Nether kann derzeit nicht betreten werden.§r"
+    nether_portal_block_modification: "§cDu darfst in der Nähe des Nether-Portals keine Blöcke platzieren oder zerstören.§r"
+    nether_start_countdown: "§3Der Nether kann in §e{time} §3{unit} betreten werden.§r"
+    nether_start: "§aDer Nether kann nun betreten werden.§r"
+    nether_end_countdown: "§cDer Nether wird in §e{time} §c{unit} geschlossen.§r"
+    nether_end: "§cDer Nether kann nun nicht mehr betreten werden.§r"
+    border_shrink_countdown: "§cDie Border beginnt in §e{time} §c{unit} zu schrumpfen.§r"
+    border_shrink_start: "§cDie Border verkleinert sich nun.§r"
+    border_shrink_end: "§aDie Border hat ihre finale Größe erreicht.§r"
+    enemy_reveal_countdown: "§cIn §e{time} §c{unit} werden die Koordinaten des nächsten feindlichen Spielers veröffentlicht.§r"
+    enemy_reveal_success: "§cDer Spieler §e{player} §cist §e{meters} §cBlöcke entfernt: §7(x: {x}, y: {y}, z: {z})§r"
+    enemy_reveal_no_enemy_found: "§cEs konnte kein feindlicher Spieler gefunden werden.§r"
+    game_end_countdown: "§cDas Spiel endet in §e{time} §c{unit}.§r"
+    game_end_explanation: "§7Das Team, das sich am nächsten beim Portal befindet, gewinnt das Spiel.§r"
+    game_end_no_winner: "§cDie Zeit ist abgelaufen. Das Spiel endet unentschieden.§r"
+    server_restart_countdown: "§cDer Server wird in §e{time} §c{unit} neu gestartet.§r"
+    # Kick
+    kick_server_full: "§cDer Server ist voll - bitte warte.§r"
+    kick_hub_command: "§cDu hast den Server verlassen.§r"
+    kick_server_restarting: "§cDer Server wird neu gestartet.§r"

@@ -1,0 +1,21 @@
+name: Pugna
+version: '0.1.0'
+main: at.minecraft.pugna.Pugna
+authors: [ DerStresser ]
+
+commands:
+  countdown:
+    description: Set the remaining time of an active countdown
+    usage: /countdown set <seconds>
+
+  gui:
+    description: Enable or disable the sidebar scoreboard GUI
+    usage: /gui <enable|disable>
+
+  hub:
+    description: Send yourself back to the hub
+    usage: /hub
+
+  team:
+    description: Manage or join teams
+    usage: /team <list|join|leave|rename>
