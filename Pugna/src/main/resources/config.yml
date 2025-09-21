@@ -1,0 +1,92 @@
+game:
+  development: false
+
+players:
+  friendly_fire: false
+  max_teams_count: 16
+  max_team_capacity: 1
+  min_players_count: 2
+  default_team_names: [
+    "Abriss", "AimAssist", "AimBot", "Alpha", "ArrowStorm", "AutoKlicker",
+    "BlitzGang", "BlockHitters", "Blocklords", "BowLegends", "BowSpammer", "Bravo",
+    "Campers", "Chaos", "ChickenKillers", "Clowns", "ComboGods", "CritCrew", "CritHit", "Critters",
+    "Delta", "DoubleHit", "Draufgaenger", "Drescher",
+    "Echo", "EliteForce", "eZClap", "eZWin",
+    "Farmers", "FastClick", "FirstBlood", "FirstKill", "FlameBros",
+    "Gapplers", "GGWP", "GIGA", "GOATs", "Griefer",
+    "HackClient", "Hackers", "HauDrauf", "Headshot", "Hunters",
+    "Inferno", "IronGang", "Irre",
+    "JavaEdition", "JavaScript", "Juergen",
+    "Killaura", "KillStreak", "Klatsche", "KlickSpeed", "Knockback",
+    "Laggers", "Lappen", "LavaBoys", "LowPingers", "Lustknaben",
+    "MelonGang", "MineBoys", "MongoBongo", "MultiKill",
+    "Nodus", "NoHacks", "Noobs", "NoSkill",
+    "OhnePlan", "Ohrfeige", "OPGang", "Overkill",
+    "Phantom", "Ping999", "PixelCrew", "PotatoArmy", "Pruegler", "PvPGoetter",
+    "QuadForce", "Quatschkoepfe", "QuickScope",
+    "RageMode", "Rasur", "Rekt", "RiskTakers", "RodGods",
+    "Schnetzler", "Shadow", "Skillaura", "SkullCrush", "SpawnTrap", "SpeedHit", "Storm", "Sweat99", "SwordMania", "SwordZ",
+    "TeamKill", "TeamOP", "Terror", "Titan", "TNTGang", "TNTKings", "TNTLegends", "TrapMasters", "TryHard",
+    "Ultra", "Unfall", "UnitZ", "Unkillable", "Unstoppables",
+    "VARO", "VaroBoys", "Verpeilt", "VoidRiders",
+    "Warriors", "Watsche", "WinOrDie", "WomboCombo",
+    "Xplosion", "XRay", "Xtreme",
+    "YEET", "YOLO",
+    "Zerstampfer", "Zerstoerer", "Zucker"
+  ]
+
+lobby:
+  world: "lobby"
+  spawn:
+    x: 0.5
+    y: 64.0
+    z: 0.5
+    yaw: 0.0
+    pitch: 0.0
+
+pugna:
+  world: "pugna"
+  nether_world: "pugna_nether"
+  spawn:
+    x: 0.5
+    # y will be calculated automatically
+    z: 0.5
+    yaw: 0.0
+    pitch: 0.0
+
+border:
+  base_size: 2048.0
+  end_size: 256.0
+  max_size: 4096.0
+  size_per_player: 64.0
+
+countdowns:
+  lobby:
+    seconds: 60
+  game:
+    seconds: 40
+  restart:
+    seconds: 25
+
+events:
+  nether_start:
+    countdown_start_seconds: 3600     # 01:00:00
+    event_seconds: 5400               # 01:30:00
+  border_shrink:
+    countdown_start_seconds: 12600    # 03:30:00
+    event_start_seconds: 14400        # 04:00:00
+    event_end_seconds: 36000          # 10:00:00
+  nether_end:
+    countdown_start_seconds: 41400    # 11:30:00
+    event_seconds: 43200              # 12:00:00
+  enemy_reveal:
+    countdown_start_seconds: 48600    # 13:30:00
+    event_seconds: 50400              # 14:00:00
+  game_end:
+    countdown_start_seconds: 55800    # 15:30:00
+    event_seconds: 57600              # 16:00:00
+
+item_names:
+  team_selection_item: "§aTeam-Auswahl§r"
+  navigation_item: "§6Navigation§r"
+  leave_item: "§cVerlassen§r"

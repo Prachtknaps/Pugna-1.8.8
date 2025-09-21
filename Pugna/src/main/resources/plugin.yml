@@ -2,3 +2,4 @@ name: Pugna
 version: '1.0'
 main: at.minecraft.pugna.Pugna
 authors: [ DerStresser ]
+prefix: "[Pugna]"
