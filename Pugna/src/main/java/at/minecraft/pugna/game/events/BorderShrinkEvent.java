@@ -26,6 +26,16 @@ public class BorderShrinkEvent implements GameEvent {
     }
 
     @Override
+    public String getEventName() {
+        return "Border-Start";
+    }
+
+    @Override
+    public int getEventSeconds() {
+        return eventStartSeconds;
+    }
+
+    @Override
     public boolean isExpired(int seconds) {
         return seconds > eventEndSeconds;
     }

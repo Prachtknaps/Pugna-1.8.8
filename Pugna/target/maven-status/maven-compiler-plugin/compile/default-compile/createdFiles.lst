@@ -20,6 +20,7 @@ at\minecraft\pugna\config\MessageConfig.class
 at\minecraft\pugna\listeners\WorldListener.class
 at\minecraft\pugna\config\GameConfig.class
 at\minecraft\pugna\game\events\BorderShrinkEvent.class
+at\minecraft\pugna\game\timers\GameTimer$NextEventInfo.class
 at\minecraft\pugna\utils\ItemUtils.class
 at\minecraft\pugna\listeners\PortalListener.class
 at\minecraft\pugna\utils\PlayerUtils.class
@@ -44,6 +45,7 @@ at\minecraft\pugna\utils\FileSystemUtils.class
 at\minecraft\pugna\commands\TeamCommand.class
 at\minecraft\pugna\gui\TeamSelectionGUI.class
 at\minecraft\pugna\Pugna.class
+at\minecraft\pugna\game\timers\GameTimer$1.class
 at\minecraft\pugna\game\timers\GameTimer.class
 at\minecraft\pugna\teams\Team.class
 at\minecraft\pugna\config\PugnaConfig.class

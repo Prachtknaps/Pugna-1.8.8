@@ -131,14 +131,15 @@ public final class ItemUtils {
 
         try {
             Potion potion = Potion.fromItemStack(itemStack);
+
+            /* === Water Bottles === */
+            if (potion.getEffects() == null || potion.getEffects().isEmpty()) {
+                return true;
+            }
+
             PotionType potionType = potion.getType();
             boolean isSplash = potion.isSplash();
             int level = potion.getLevel();
-
-            /* === Water Bottles === */
-            if (potionType == PotionType.WATER) {
-                return true;
-            }
 
             /* === Potion of Healing (Level I/II, no splash) === */
             if (potionType == PotionType.INSTANT_HEAL) {

@@ -27,6 +27,16 @@ public class EnemyRevealEvent implements GameEvent {
     }
 
     @Override
+    public String getEventName() {
+        return "Gegner anzeigen";
+    }
+
+    @Override
+    public int getEventSeconds() {
+        return eventSeconds;
+    }
+
+    @Override
     public boolean isExpired(int seconds) {
         return triggered && seconds > eventSeconds;
     }

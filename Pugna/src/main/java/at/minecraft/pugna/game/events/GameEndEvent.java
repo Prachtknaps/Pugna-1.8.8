@@ -40,6 +40,16 @@ public class GameEndEvent implements GameEvent {
     }
 
     @Override
+    public String getEventName() {
+        return "Spielende";
+    }
+
+    @Override
+    public int getEventSeconds() {
+        return eventSeconds;
+    }
+
+    @Override
     public boolean isExpired(int seconds) {
         return triggered && seconds > eventSeconds;
     }

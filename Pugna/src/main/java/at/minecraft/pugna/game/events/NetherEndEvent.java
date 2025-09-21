@@ -24,6 +24,16 @@ public class NetherEndEvent implements GameEvent {
     }
 
     @Override
+    public String getEventName() {
+        return "Nether-Ende";
+    }
+
+    @Override
+    public int getEventSeconds() {
+        return eventSeconds;
+    }
+
+    @Override
     public boolean isExpired(int seconds) {
         return triggered && seconds > eventSeconds;
     }

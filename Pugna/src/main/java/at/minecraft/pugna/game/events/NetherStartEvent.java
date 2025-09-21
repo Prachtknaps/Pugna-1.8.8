@@ -21,6 +21,16 @@ public class NetherStartEvent implements GameEvent {
     }
 
     @Override
+    public String getEventName() {
+        return "Nether-Start";
+    }
+
+    @Override
+    public int getEventSeconds() {
+        return eventSeconds;
+    }
+
+    @Override
     public boolean isExpired(int seconds) {
         return seconds > eventSeconds;
     }

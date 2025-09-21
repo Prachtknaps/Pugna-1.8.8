@@ -107,8 +107,7 @@ public class GameTimer extends BukkitRunnable {
         }
     }
 
-    private void handleGUI()
-    {
+    private void handleGUI() {
         ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
         if (scoreboardManager == null) {
             return;
@@ -116,7 +115,7 @@ public class GameTimer extends BukkitRunnable {
 
         final int alivePlayersCount = PlayerUtils.getAlivePlayersCount();
         final int teamsCount = gameManager.getTeams().size();
-        final String formattedTime = formatTime(seconds);
+        final String formattedTime = formatTime(this.seconds);
 
         double borderSize;
         if (worldManager.getPugnaWorld() != null && worldManager.getPugnaWorld().getWorldBorder() != null) {
@@ -126,13 +125,26 @@ public class GameTimer extends BukkitRunnable {
         }
         final int borderBlocks = (int) Math.round(borderSize);
 
+        final String nextEventLabel;
+        final String timeUntilNextEvent;
+
+        GameState currentState = gameManager.getState();
+        if (currentState == GameState.GAME_RUNNING || currentState == GameState.GAME_PAUSED) {
+            NextEventInfo next = findNextEvent(Math.max(0, this.seconds));
+            nextEventLabel = next.getEventName();
+            timeUntilNextEvent = (next.getSecondsUntil() >= 0) ? formatTime(next.getSecondsUntil()) : "—";
+        } else {
+            nextEventLabel = "—";
+            timeUntilNextEvent = "—";
+        }
+
         Bukkit.getScheduler().runTask(Pugna.getInstance(), () -> {
             Scoreboard sharedScoreboard = scoreboardManager.getNewScoreboard();
             Objective objective = sharedScoreboard.registerNewObjective("pugna", "dummy");
             objective.setDisplaySlot(org.bukkit.scoreboard.DisplaySlot.SIDEBAR);
             objective.setDisplayName("§6§lPugna");
 
-            int line = 9;
+            int line = 14;
 
             /* === Time === */
             objective.getScore("§0").setScore(line--);
@@ -148,6 +160,13 @@ public class GameTimer extends BukkitRunnable {
             objective.getScore("§2").setScore(line--);
             objective.getScore("§eBorder").setScore(line--);
             objective.getScore("§f" + borderBlocks + " §7Blöcke").setScore(line--);
+
+            /* === Next Event === */
+            objective.getScore("§3").setScore(line--);
+            objective.getScore("§eNächstes Event").setScore(line--);
+            objective.getScore("§d" + nextEventLabel).setScore(line--);
+            objective.getScore("§f" + timeUntilNextEvent).setScore(line--);
+            objective.getScore("§4").setScore(line--);
 
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (blockedGUIPlayers.contains(player.getUniqueId())) {
@@ -215,5 +234,57 @@ public class GameTimer extends BukkitRunnable {
         int minutes = (totalSeconds % 3600) / 60;
         int seconds = totalSeconds % 60;
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+
+    private static final class NextEventInfo {
+        private final String eventName;
+        private final int secondsUntil;
+
+        private NextEventInfo(String eventName, int secondsUntil) {
+            this.eventName = eventName;
+            this.secondsUntil = secondsUntil;
+        }
+
+        public String getEventName() {
+            return eventName;
+        }
+
+        public int getSecondsUntil() {
+            return secondsUntil;
+        }
+    }
+
+    private NextEventInfo findNextEvent(int nowSeconds) {
+        GameEvent nextEvent = null;
+        int nextEventSeconds = Integer.MAX_VALUE;
+
+        for (GameEvent gameEvent : this.events) {
+            if (gameEvent == null || gameEvent.isExpired(nowSeconds)) {
+                continue;
+            }
+
+            int eventSeconds = gameEvent.getEventSeconds();
+            if (eventSeconds < nowSeconds) {
+                continue;
+            }
+
+            if (eventSeconds < nextEventSeconds) {
+                nextEvent = gameEvent;
+                nextEventSeconds = eventSeconds;
+            } else if (eventSeconds == nextEventSeconds && nextEvent != null) {
+                String candidateName = String.valueOf(gameEvent.getEventName());
+                String currentName   = String.valueOf(nextEvent.getEventName());
+                if (candidateName.compareToIgnoreCase(currentName) < 0) {
+                    nextEvent = gameEvent;
+                }
+            }
+        }
+
+        if (nextEvent == null) {
+            return new NextEventInfo("—", -1);
+        }
+
+        int secondsUntil = Math.max(0, nextEventSeconds - nowSeconds);
+        return new NextEventInfo(nextEvent.getEventName(), secondsUntil);
     }
 }
