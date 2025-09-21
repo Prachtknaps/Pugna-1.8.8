@@ -57,7 +57,7 @@ messages:
     game_paused: "{prefix} §cDas Spiel ist derzeit pausiert. Bitte warte, bis mehr als die Hälfte der lebenden Spieler online ist.§r"
     game_resumed: "{prefix} §aDas Spiel wird nun wieder fortgesetzt.§r"
 
-    found_diamonds: "{prefix} §cObacht! Es wurden bereits Diamanten gefunden!§r"
+    found_diamonds: "{prefix} §dObacht! Es wurden bereits §eDiamanten §dgefunden!§r"
     forbidden_items_removed: "{prefix} §cEs wurden verbotene Items aus deinem Inventar entfernt §7(§e{count} Stück§7)§c.§r"
 
     nether_teleport_not_allowed: "{prefix} §cDer Nether kann derzeit nicht betreten werden.§r"

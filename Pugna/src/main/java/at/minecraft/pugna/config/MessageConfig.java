@@ -178,7 +178,7 @@ public class MessageConfig {
         messages.put(Message.GAME_PAUSED, new ChatMessage(configuration.getString("messages.phases.game_paused", "{prefix} §cDas Spiel ist derzeit pausiert. Bitte warte, bis mehr als die Hälfte der lebenden Spieler online ist.§r")).prefix(getPrefix()).toString());
         messages.put(Message.GAME_RESUMED, new ChatMessage(configuration.getString("messages.phases.game_resumed", "{prefix} §aDas Spiel wird nun wieder fortgesetzt.§r")).prefix(getPrefix()).toString());
 
-        messages.put(Message.FOUND_DIAMONDS, new ChatMessage(configuration.getString("messages.phases.found_diamonds", "{prefix} §cObacht! Es wurden bereits Diamanten gefunden!§r")).prefix(getPrefix()).toString());
+        messages.put(Message.FOUND_DIAMONDS, new ChatMessage(configuration.getString("messages.phases.found_diamonds", "{prefix} §dObacht! Es wurden bereits §eDiamanten §dgefunden!§r")).prefix(getPrefix()).toString());
         messages.put(Message.FORBIDDEN_ITEMS_REMOVED, new ChatMessage(configuration.getString("messages.phases.forbidden_items_removed", "{prefix} §cEs wurden verbotene Items aus deinem Inventar entfernt §7(§e{count} Stück§7)§c.§r")).prefix(getPrefix()).toString());
 
         messages.put(Message.NETHER_TELEPORT_NOT_ALLOWED, new ChatMessage(configuration.getString("messages.phases.nether_teleport_not_allowed", "{prefix} §cDer Nether kann derzeit nicht betreten werden.§r")).prefix(getPrefix()).toString());
