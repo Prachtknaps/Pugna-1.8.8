@@ -111,7 +111,7 @@ public final class Pugna extends JavaPlugin {
     @Override
     public void onDisable() {
         /* === Clean Up === */
-        if (pugnaConfig.isDevelopment() || gameManager.getState() == GameState.RESTARTING) {
+        if (pugnaConfig.isDevelopment() || gameManager.getState() == GameState.LOBBY_WAITING || gameManager.getState() == GameState.LOBBY_COUNTDOWN || gameManager.getState() == GameState.RESTARTING) {
             gameConfig.reset();
             worldManager.deleteWorldData();
         }

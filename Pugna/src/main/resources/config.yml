@@ -92,5 +92,6 @@ events:
 
 item_names:
   team_selection_item: "§aTeam-Auswahl§r"
+  info_book_item: "§6Pugna"
   navigation_item: "§6Navigation§r"
   leave_item: "§cVerlassen§r"

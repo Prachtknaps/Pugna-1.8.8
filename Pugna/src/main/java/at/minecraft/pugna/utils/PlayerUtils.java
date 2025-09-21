@@ -4,18 +4,19 @@ import at.minecraft.pugna.Pugna;
 import at.minecraft.pugna.config.PugnaConfig;
 import at.minecraft.pugna.game.GameManager;
 import at.minecraft.pugna.game.GameState;
+import at.minecraft.pugna.game.events.GameEvent;
+import at.minecraft.pugna.game.timers.GameTimer;
 import at.minecraft.pugna.teams.Team;
 import org.bukkit.*;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public final class PlayerUtils {
     private PlayerUtils() {}
@@ -131,12 +132,81 @@ public final class PlayerUtils {
             teamSelectionItemMeta.setDisplayName(getPugnaConfig().getTeamSelectionItemName());
             teamSelectionItem.setItemMeta(teamSelectionItemMeta);
 
+            ItemStack infoBookItem = new ItemStack(Material.WRITTEN_BOOK);
+            BookMeta infoBookMeta = (BookMeta) infoBookItem.getItemMeta();
+            if (infoBookMeta != null) {
+                infoBookMeta.setTitle(getPugnaConfig().getInfoBookItemName());
+                infoBookMeta.setAuthor("DerStresser");
+
+                infoBookMeta.addPage(
+                    "§lWillkommen bei §6Pugna§r!\n\n" +
+                    "§8Pugna ist ein Spielmodus, der an das YouTuber-Projekt\n" +
+                    "§3VARO §8angelehnt ist.\n\n" +
+                    "§8Spiele taktisch und überlebe!"
+                );
+
+                GameTimer gameTimer = getGameManager().getGameTimer();
+                List<GameEvent> events = (gameTimer != null) ? new ArrayList<>(gameTimer.getEvents()) : Collections.emptyList();
+                if (events.isEmpty()) {
+                    infoBookMeta.addPage("§d§lSpiel-Events I§r:\n\n§7(Keine Events gefunden)\n");
+                } else {
+                    events.sort(Comparator.comparingInt(GameEvent::getEventSeconds));
+
+                    final int perPage = 3;
+                    final int totalPages = (events.size() + perPage - 1) / perPage;
+
+                    for (int pageIndex = 0; pageIndex < totalPages; pageIndex++) {
+                        StringBuilder page = new StringBuilder().append("§d§lSpiel-Events ").append(toRoman(pageIndex + 1)).append("§r:\n\n");
+
+                        int fromIndex = pageIndex * perPage;
+                        int toIndex = Math.min(events.size(), fromIndex + perPage);
+
+                        for (int i = fromIndex; i < toIndex; i++) {
+                            GameEvent event = events.get(i);
+                            String time = GameTimer.formatTime(event.getEventSeconds());
+
+                            page.append("§8• §5").append(event.getEventName()).append("\n").append("  §6").append(time).append("\n\n");
+                        }
+
+                        infoBookMeta.addPage(page.toString());
+                    }
+                }
+
+                infoBookMeta.addPage(
+                    "§c§lVerbotene Items§r:\n\n" +
+                    "§0• §4Sattel\n" +
+                    "§0• §4OP-Apfel\n\n" +
+                    "§8Verbotene Items werden aus dem Inventar entfernt."
+                );
+
+                infoBookMeta.addPage(
+                    "§c§lVerbotene Verzauberungen§r:\n\n" +
+                    "§0• §4Verbrennung\n" +
+                    "§0• §4Flamme\n" +
+                    "§0• §4Wasserläufer\n" +
+                    "§0• §4Unendlichkeit\n" +
+                    "§0• §4Dornen\n\n" +
+                    "§8Items mit verbotenen Verzauberungen werden aus dem Inventar entfernt."
+                );
+
+                infoBookMeta.addPage(
+                    "§a§lErlaubte Tränke§r:\n\n" +
+                    "§0• §2Heilung I & II §8(nur trinkbar)\n" +
+                    "§0• §2Schwäche §8(trinkbar & werfbar)\n\n" +
+                    "§cAlle anderen Tränke sind verboten.\n\n" +
+                    "§8Verbotene Tränke werden aus dem Inventar entfernt."
+                );
+
+                infoBookItem.setItemMeta(infoBookMeta);
+            }
+
             ItemStack leaveItem = new ItemStack(Material.MAGMA_CREAM);
             ItemMeta leaveItemMeta = leaveItem.getItemMeta();
             leaveItemMeta.setDisplayName(getPugnaConfig().getLeaveItemName());
             leaveItem.setItemMeta(leaveItemMeta);
 
             inventory.setItem(0, teamSelectionItem);
+            inventory.setItem(1, infoBookItem);
             inventory.setItem(8, leaveItem);
 
             player.setTotalExperience(0);
@@ -319,5 +389,20 @@ public final class PlayerUtils {
         }
 
         return closest;
+    }
+
+    /* === Helpers === */
+
+    private static String toRoman(int num) {
+        int[] values =    {1000, 900, 500, 400, 100,  90,  50,  40,  10,   9,   5,   4,   1};
+        String[] numerals = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < values.length; i++) {
+            while (num >= values[i]) {
+                num -= values[i];
+                sb.append(numerals[i]);
+            }
+        }
+        return sb.toString();
     }
 }

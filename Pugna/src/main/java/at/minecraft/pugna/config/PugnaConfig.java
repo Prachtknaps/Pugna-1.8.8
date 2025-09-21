@@ -71,6 +71,7 @@ public class PugnaConfig {
 
     /* === Item Names === */
     private String teamSelectionItemName;
+    private String infoBookItemName;
     private String navigationItemName;
     private String leaveItemName;
 
@@ -249,6 +250,10 @@ public class PugnaConfig {
         return teamSelectionItemName;
     }
 
+    public String getInfoBookItemName() {
+        return infoBookItemName;
+    }
+
     public String getNavigationItemName() {
         return navigationItemName;
     }
@@ -331,6 +336,7 @@ public class PugnaConfig {
         gameEndSeconds = Math.max(gameEndCountdownStartSeconds, configuration.getInt("events.game_end.event_seconds", 57600));
 
         teamSelectionItemName = configuration.getString("item_names.team_selection_item", "§aTeam-Auswahl§r");
+        infoBookItemName = configuration.getString("item_names.info_book_item", "§6Pugna");
         navigationItemName = configuration.getString("item_names.navigation_item", "§6Navigation§r");
         leaveItemName = configuration.getString("item_names.leave_item", "§cVerlassen§r");
     }

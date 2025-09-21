@@ -54,6 +54,12 @@ public class GameTimer extends BukkitRunnable {
         ));
     }
 
+    /* === Getters === */
+
+    public List<GameEvent> getEvents() {
+        return events;
+    }
+
     /* === Operations === */
 
     public void start() {
@@ -235,7 +241,7 @@ public class GameTimer extends BukkitRunnable {
 
     /* === Helpers === */
 
-    private String formatTime(int totalSeconds) {
+    public static String formatTime(int totalSeconds) {
         int hours = totalSeconds / 3600;
         int minutes = (totalSeconds % 3600) / 60;
         int seconds = totalSeconds % 60;

@@ -44,6 +44,8 @@ public class GameManager {
         this.worldManager = worldManager;
 
         this.teams = new ArrayList<>();
+
+        this.gameTimer = new GameTimer(pugnaConfig, messageConfig, gameConfig, worldManager, this);
     }
 
     /* === Getters === */
@@ -97,8 +99,8 @@ public class GameManager {
 
         if (gameTimer == null) {
             gameTimer = new GameTimer(pugnaConfig, messageConfig, gameConfig, worldManager, this);
-            gameTimer.setSeconds(gameConfig.getSeconds());
         }
+        gameTimer.setSeconds(gameConfig.getSeconds());
 
         World pugnaWorld = worldManager.getPugnaWorld();
         if (pugnaWorld != null) {

@@ -28,6 +28,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 
 public class InteractionListener implements Listener {
     private final PugnaConfig pugnaConfig;
@@ -76,6 +77,14 @@ public class InteractionListener implements Listener {
             if (itemInHand != null && itemInHand.getType() == Material.BED && itemInHand.hasItemMeta() && itemInHand.getItemMeta().hasDisplayName() && itemInHand.getItemMeta().getDisplayName().equals(pugnaConfig.getTeamSelectionItemName())) {
                 event.setCancelled(true);
                 TeamSelectionGUI.openFor(player);
+                return;
+            }
+        }
+
+        /* === Info Book === */
+        if (state == GameState.LOBBY_WAITING || state == GameState.LOBBY_COUNTDOWN) {
+            ItemStack itemInHand = event.getItem();
+            if (itemInHand != null && itemInHand.getType() == Material.WRITTEN_BOOK && itemInHand.hasItemMeta() && (BookMeta) itemInHand.getItemMeta() != null && ((BookMeta) itemInHand.getItemMeta()).hasTitle() && ((BookMeta) itemInHand.getItemMeta()).getTitle().equals(pugnaConfig.getInfoBookItemName())) {
                 return;
             }
         }
