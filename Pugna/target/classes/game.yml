@@ -2,6 +2,9 @@ game:
   running: false
   seconds: 0
   time: 0
+  killed_friedolin: false
+  killed_berta: false
+  found_diamonds: false
 
 teams: {}
 

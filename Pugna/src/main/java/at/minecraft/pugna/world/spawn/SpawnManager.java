@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SpawnManager {
@@ -84,6 +85,7 @@ public class SpawnManager {
             teamSpawns.get(teamIndex).add(playerSpawn.getLocation());
         }
 
+        Collections.shuffle(teamSpawns);
         getWorldManager().setTeamSpawnLocations(teamSpawns);
     }
 

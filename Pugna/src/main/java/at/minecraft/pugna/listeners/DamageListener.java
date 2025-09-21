@@ -2,6 +2,7 @@ package at.minecraft.pugna.listeners;
 
 import at.minecraft.pugna.Pugna;
 import at.minecraft.pugna.chat.Message;
+import at.minecraft.pugna.config.GameConfig;
 import at.minecraft.pugna.config.MessageConfig;
 import at.minecraft.pugna.config.PugnaConfig;
 import at.minecraft.pugna.game.GameManager;
@@ -9,33 +10,31 @@ import at.minecraft.pugna.game.GameState;
 import at.minecraft.pugna.teams.Team;
 import at.minecraft.pugna.utils.ChatUtils;
 import at.minecraft.pugna.utils.PlayerUtils;
+import at.minecraft.pugna.utils.SoundUtils;
 import at.minecraft.pugna.utils.TeamUtils;
 import at.minecraft.pugna.world.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.Sound;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
 public class DamageListener implements Listener {
     private final PugnaConfig pugnaConfig;
     private final MessageConfig messageConfig;
+    private final GameConfig gameConfig;
     private final WorldManager worldManager;
     private final GameManager gameManager;
 
-    public DamageListener(PugnaConfig pugnaConfig, MessageConfig messageConfig, WorldManager worldManager, GameManager gameManager) {
+    public DamageListener(PugnaConfig pugnaConfig, MessageConfig messageConfig, GameConfig gameConfig, WorldManager worldManager, GameManager gameManager) {
         this.pugnaConfig = pugnaConfig;
         this.messageConfig = messageConfig;
+        this.gameConfig = gameConfig;
         this.worldManager = worldManager;
         this.gameManager = gameManager;
     }
@@ -62,7 +61,7 @@ public class DamageListener implements Listener {
             }
         }
 
-        if (state != GameState.GAME_RUNNING) {
+        if (state != GameState.GAME_RUNNING && state != GameState.RESTARTING) {
             event.setCancelled(true);
         }
     }
@@ -118,6 +117,42 @@ public class DamageListener implements Listener {
             if (damagerTeam != null && victimTeam != null && damagerTeam.getId() == victimTeam.getId()) {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onMobDeath(EntityDeathEvent event) {
+        if (gameManager.getState() != GameState.GAME_RUNNING) {
+            return;
+        }
+
+        Player killer = event.getEntity().getKiller();
+        if (killer == null) {
+            return;
+        }
+
+        EntityType entityType = event.getEntityType();
+
+        /* === Handle Friedolin Death === */
+        if (entityType == EntityType.CHICKEN && pugnaConfig.useFriedolin() && !gameConfig.killedFriedolin()) {
+            gameConfig.saveKilledFriedolin(true);
+
+            String message = messageConfig.getChatMessage(Message.PLAYER_KILLED_OTHERS).player("Friedolin").killer(killer.getName()).toString();
+            ChatUtils.broadcast(message);
+            SoundUtils.broadcast(Sound.CHICKEN_HURT, 1.0f, 1.0f);
+
+            return;
+        }
+
+        /* === Handle Berta Death === */
+        if (entityType == EntityType.COW && pugnaConfig.useBerta() && !gameConfig.killedBerta()) {
+            gameConfig.saveKilledBerta(true);
+
+            String message = messageConfig.getChatMessage(Message.PLAYER_KILLED_OTHERS).player("Berta").killer(killer.getName()).toString();
+            ChatUtils.broadcast(message);
+            SoundUtils.broadcast(Sound.COW_HURT, 1.0f, 1.0f);
+
+            return;
         }
     }
 

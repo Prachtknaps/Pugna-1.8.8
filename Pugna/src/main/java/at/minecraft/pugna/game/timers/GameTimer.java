@@ -148,22 +148,22 @@ public class GameTimer extends BukkitRunnable {
 
             /* === Time === */
             objective.getScore("§0").setScore(line--);
-            objective.getScore("§eZeit").setScore(line--);
+            objective.getScore("§eZeit                ").setScore(line--);
             objective.getScore("§f" + formattedTime).setScore(line--);
 
             /* === Teams === */
             objective.getScore("§1").setScore(line--);
-            objective.getScore("§eTeams").setScore(line--);
+            objective.getScore("§eTeams               ").setScore(line--);
             objective.getScore("§f" + teamsCount + " §7(" + alivePlayersCount + " Spieler)").setScore(line--);
 
             /* === Border === */
             objective.getScore("§2").setScore(line--);
-            objective.getScore("§eBorder").setScore(line--);
+            objective.getScore("§eBorder              ").setScore(line--);
             objective.getScore("§f" + borderBlocks + " §7Blöcke").setScore(line--);
 
             /* === Next Event === */
             objective.getScore("§3").setScore(line--);
-            objective.getScore("§eNächstes Event").setScore(line--);
+            objective.getScore("§eNächstes Event      ").setScore(line--);
             objective.getScore("§d" + nextEventLabel).setScore(line--);
             objective.getScore("§f" + timeUntilNextEvent).setScore(line--);
             objective.getScore("§4").setScore(line--);

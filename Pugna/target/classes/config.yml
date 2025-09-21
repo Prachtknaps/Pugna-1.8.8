@@ -1,6 +1,9 @@
 game:
   development: false
   development_seed: null
+  use_friedolin: true
+  use_berta: true
+  use_found_diamonds: true
 
 players:
   friendly_fire: false

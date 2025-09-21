@@ -53,6 +53,18 @@ public class GameConfig {
         return Math.max(0, configuration.getInt("game.time", 0));
     }
 
+    public boolean killedFriedolin() {
+        return configuration.getBoolean("game.killed_friedolin", false);
+    }
+
+    public boolean killedBerta() {
+        return configuration.getBoolean("game.killed_berta", false);
+    }
+
+    public boolean foundDiamonds() {
+        return configuration.getBoolean("game.found_diamonds", false);
+    }
+
     public List<Team> getTeams() {
         int maxTeamCapacity = Pugna.getInstance().getPugnaConfig().getMaxTeamCapacity();
         List<Team> teams = new ArrayList<>();
@@ -188,6 +200,9 @@ public class GameConfig {
         saveRunningState(false);
         saveSeconds(0);
         saveTime(0L);
+        saveKilledFriedolin(false);
+        saveKilledBerta(false);
+        saveFoundDiamonds(false);
         clearProtectedAreas();
         clearTeams();
         saveInitialBorderSize(0);
@@ -206,6 +221,21 @@ public class GameConfig {
 
     public void saveTime(long time) {
         configuration.set("game.time", time);
+        save();
+    }
+
+    public void saveKilledFriedolin(boolean killedFriedolin) {
+        configuration.set("game.killed_friedolin", killedFriedolin);
+        save();
+    }
+
+    public void saveKilledBerta(boolean killedBerta) {
+        configuration.set("game.killed_berta", killedBerta);
+        save();
+    }
+
+    public void saveFoundDiamonds(boolean foundDiamonds) {
+        configuration.set("game.found_diamonds", foundDiamonds);
         save();
     }
 

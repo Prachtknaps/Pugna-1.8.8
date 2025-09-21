@@ -1,14 +1,20 @@
 package at.minecraft.pugna.listeners;
 
+import at.minecraft.pugna.chat.Message;
+import at.minecraft.pugna.config.GameConfig;
+import at.minecraft.pugna.config.MessageConfig;
 import at.minecraft.pugna.config.PugnaConfig;
 import at.minecraft.pugna.game.GameManager;
 import at.minecraft.pugna.game.GameState;
 import at.minecraft.pugna.gui.NavigationGUI;
 import at.minecraft.pugna.gui.TeamSelectionGUI;
+import at.minecraft.pugna.utils.ChatUtils;
 import at.minecraft.pugna.utils.PlayerUtils;
+import at.minecraft.pugna.utils.SoundUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -25,10 +31,14 @@ import org.bukkit.inventory.ItemStack;
 
 public class InteractionListener implements Listener {
     private final PugnaConfig pugnaConfig;
+    private final MessageConfig messageConfig;
+    private final GameConfig gameConfig;
     private final GameManager gameManager;
 
-    public InteractionListener(PugnaConfig pugnaConfig, GameManager gameManager) {
+    public InteractionListener(PugnaConfig pugnaConfig, MessageConfig messageConfig, GameConfig gameConfig, GameManager gameManager) {
         this.pugnaConfig = pugnaConfig;
+        this.messageConfig = messageConfig;
+        this.gameConfig = gameConfig;
         this.gameManager = gameManager;
     }
 
@@ -136,6 +146,14 @@ public class InteractionListener implements Listener {
 
         if (state != GameState.GAME_RUNNING && state != GameState.RESTARTING) {
             event.setCancelled(true);
+        }
+
+        /* === Handle Diamond Discovery === */
+        if (state == GameState.GAME_RUNNING && pugnaConfig.useFoundDiamonds() && !gameConfig.foundDiamonds() && event.getItem() != null && event.getItem().getItemStack() != null && event.getItem().getItemStack().getType() == Material.DIAMOND) {
+            gameConfig.saveFoundDiamonds(true);
+            String message = messageConfig.getMessage(Message.FOUND_DIAMONDS);
+            ChatUtils.broadcast(message);
+            SoundUtils.broadcast(Sound.LEVEL_UP, 1.0f, 1.0f);
         }
     }
 

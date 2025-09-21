@@ -13,6 +13,9 @@ public class PugnaConfig {
     /* === Game === */
     private boolean development;
     private Long developmentSeed;
+    private boolean useFriedolin;
+    private boolean useBerta;
+    private boolean useFoundDiamonds;
 
     /* === Players/Teams === */
     private boolean friendlyFire;
@@ -84,6 +87,18 @@ public class PugnaConfig {
 
     public Long getDevelopmentSeed() {
         return developmentSeed;
+    }
+
+    public boolean useFriedolin() {
+        return useFriedolin;
+    }
+
+    public boolean useBerta() {
+        return useBerta;
+    }
+
+    public boolean useFoundDiamonds() {
+        return useFoundDiamonds;
     }
 
     public boolean isFriendlyFire() {
@@ -260,6 +275,9 @@ public class PugnaConfig {
         } else {
             developmentSeed = null;
         }
+        useFriedolin = configuration.getBoolean("game.use_friedolin", true);
+        useBerta = configuration.getBoolean("game.use_berta", true);
+        useFoundDiamonds = configuration.getBoolean("game.use_found_diamonds", true);
 
         friendlyFire = configuration.getBoolean("players.friendly_fire", false);
         maxTeamsCount = Math.max(4, Math.min(64, configuration.getInt("players.max_teams_count", 16)));

@@ -90,9 +90,9 @@ public final class Pugna extends JavaPlugin {
         pluginManager.registerEvents(new BlockListener(messageConfig, gameManager), this);
         pluginManager.registerEvents(new ChatListener(pugnaConfig, gameManager), this);
         pluginManager.registerEvents(new ConnectionListener(pugnaConfig, messageConfig, worldManager, gameManager), this);
-        pluginManager.registerEvents(new DamageListener(pugnaConfig, messageConfig, worldManager, gameManager), this);
-        pluginManager.registerEvents(new InteractionListener(pugnaConfig, gameManager), this);
-        pluginManager.registerEvents(new InventoryListener(pugnaConfig, gameManager), this);
+        pluginManager.registerEvents(new DamageListener(pugnaConfig, messageConfig, gameConfig, worldManager, gameManager), this);
+        pluginManager.registerEvents(new InteractionListener(pugnaConfig, messageConfig, gameConfig, gameManager), this);
+        pluginManager.registerEvents(new InventoryListener(pugnaConfig, messageConfig, gameConfig, gameManager), this);
         pluginManager.registerEvents(new PortalListener(pugnaConfig, messageConfig, gameConfig, worldManager), this);
         pluginManager.registerEvents(new WorldListener(pugnaConfig, gameManager), this);
 
