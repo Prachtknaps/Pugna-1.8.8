@@ -107,17 +107,13 @@ public final class BorderManager {
 
                 worldBorder.setCenter(spawnX, spawnZ);
                 worldBorder.setSize(initialBorderSize);
-
-                gameConfig.saveCurrentBorderSize(initialBorderSize);
             } else if (seconds >= pugnaConfig.getBorderShrinkStartSeconds() && seconds < pugnaConfig.getBorderShrinkEndSeconds()) {
-                double currentBorderSize = Math.min(gameConfig.getCurrentBorderSize(), maxBorderSize);
+                double currentBorderSize = Math.min(worldBorder.getSize(), maxBorderSize);
                 long duration = Math.max(0L, pugnaConfig.getBorderShrinkEndSeconds() - seconds);
 
                 worldBorder.setCenter(spawnX, spawnZ);
                 worldBorder.setSize(currentBorderSize);
                 worldBorder.setSize(borderEndSize, duration);
-
-                gameConfig.saveCurrentBorderSize(currentBorderSize);
             } else {
                 worldBorder.setCenter(spawnX, spawnZ);
                 worldBorder.setSize(borderEndSize);
@@ -125,7 +121,7 @@ public final class BorderManager {
                 gameConfig.saveCurrentBorderSize(borderEndSize);
             }
         } else if (state == GameState.GAME_PAUSED) {
-            double currentBorderSize = Math.min(gameConfig.getCurrentBorderSize(), maxBorderSize);
+            double currentBorderSize = Math.min(worldBorder.getSize(), maxBorderSize);
 
             worldBorder.setCenter(spawnX, spawnZ);
             worldBorder.setSize(currentBorderSize);

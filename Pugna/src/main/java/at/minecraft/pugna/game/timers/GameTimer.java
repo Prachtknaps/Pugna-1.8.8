@@ -13,6 +13,7 @@ import at.minecraft.pugna.utils.PlayerUtils;
 import at.minecraft.pugna.world.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -85,12 +86,17 @@ public class GameTimer extends BukkitRunnable {
                 handleForbiddenItemRemove();
             }
 
-            gameConfig.saveSeconds(seconds);
-            gameConfig.saveTime(worldManager.getPugnaWorld().getTime());
+            if (seconds % 10 == 0) {
+                gameConfig.saveSeconds(seconds);
+                World pugnaWorld = worldManager.getPugnaWorld();
+                if (pugnaWorld != null) {
+                    gameConfig.saveTime(pugnaWorld.getTime());
 
-            WorldBorder worldBorder = worldManager.getPugnaWorld().getWorldBorder();
-            if (worldBorder != null) {
-                gameConfig.saveCurrentBorderSize(worldBorder.getSize());
+                    WorldBorder worldBorder = pugnaWorld.getWorldBorder();
+                    if (worldBorder != null) {
+                        gameConfig.saveCurrentBorderSize(worldBorder.getSize());
+                    }
+                }
             }
 
             Iterator<GameEvent> iterator = events.iterator();
