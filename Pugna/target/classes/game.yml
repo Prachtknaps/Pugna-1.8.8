@@ -1,0 +1,11 @@
+game:
+  running: false
+  seconds: 0
+  time: 0
+
+teams: {}
+
+world:
+  protected_areas: {}
+  initial_border_size: 0
+  current_border_size: 0

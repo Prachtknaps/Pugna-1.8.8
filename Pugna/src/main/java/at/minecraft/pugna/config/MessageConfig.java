@@ -14,8 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class MessageConfig
-{
+public class MessageConfig {
     private final Pugna plugin;
     private final String fileName = "messages.yml";
 

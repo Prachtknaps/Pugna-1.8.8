@@ -12,6 +12,7 @@ public class PugnaConfig {
 
     /* === Game === */
     private boolean development;
+    private Long developmentSeed;
 
     /* === Players/Teams === */
     private boolean friendlyFire;
@@ -79,6 +80,10 @@ public class PugnaConfig {
 
     public boolean isDevelopment() {
         return development;
+    }
+
+    public Long getDevelopmentSeed() {
+        return developmentSeed;
     }
 
     public boolean isFriendlyFire() {
@@ -243,6 +248,18 @@ public class PugnaConfig {
 
     public void setup() {
         development = configuration.getBoolean("game.development", false);
+        Object initialDevelopmentSeed = configuration.get("game.development_seed");
+        if (initialDevelopmentSeed instanceof Number) {
+            developmentSeed = ((Number) initialDevelopmentSeed).longValue();
+        } else if (initialDevelopmentSeed instanceof String) {
+            try {
+                developmentSeed = Long.parseLong((String) initialDevelopmentSeed);
+            } catch (NumberFormatException exception) {
+                developmentSeed = null;
+            }
+        } else {
+            developmentSeed = null;
+        }
 
         friendlyFire = configuration.getBoolean("players.friendly_fire", false);
         maxTeamsCount = Math.max(4, Math.min(64, configuration.getInt("players.max_teams_count", 16)));
