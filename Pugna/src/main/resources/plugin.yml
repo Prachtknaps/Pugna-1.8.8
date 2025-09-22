@@ -11,7 +11,7 @@ commands:
 
   gui:
     description: "Enable or disable the sidebar scoreboard GUI"
-    usage: "/gui <enable|disable>"
+    usage: "/gui <enable | disable>"
 
   hub:
     description: "Send yourself back to the hub"
@@ -19,8 +19,8 @@ commands:
 
   rules:
     description: "Shows the Pugna rules (items, enchantments, potions)."
-    usage: "/rules <items|enchantments|potions>"
+    usage: "/rules <items | enchantments | potions>"
 
   team:
     description: "Manage or join teams"
-    usage: "/team <list|join|leave|rename>"
+    usage: "/team <list | join <name> | rename <name> | leave>"

@@ -125,12 +125,12 @@ public class MessageConfig {
         messages.put(Message.COUNTDOWN_UPDATE_SUCCESS, new ChatMessage(configuration.getString("messages.countdown.update_success", "{prefix} §aDer Countdown wurde auf §e{time} §a{unit} gesetzt.§r")).prefix(getPrefix()).toString());
 
         /* === GUI === */
-        messages.put(Message.GUI_USAGE, new ChatMessage(configuration.getString("messages.gui.usage", "§7/gui <enable|disable>§r")).prefix(getPrefix()).toString());
+        messages.put(Message.GUI_USAGE, new ChatMessage(configuration.getString("messages.gui.usage", "§7/gui <enable | disable>§r")).prefix(getPrefix()).toString());
         messages.put(Message.GUI_ENABLED, new ChatMessage(configuration.getString("messages.gui.enabled", "{prefix} §aDeine GUI wurde aktiviert.§r")).prefix(getPrefix()).toString());
         messages.put(Message.GUI_DISABLED, new ChatMessage(configuration.getString("messages.gui.disabled", "{prefix} §cDeine GUI wurde deaktiviert.§r")).prefix(getPrefix()).toString());
 
         /* === Rules === */
-        messages.put(Message.RULES_USAGE, new ChatMessage(configuration.getString("messages.rules.usage", "§7/rules <items|enchantments|potions>§r")).prefix(getPrefix()).toString());
+        messages.put(Message.RULES_USAGE, new ChatMessage(configuration.getString("messages.rules.usage", "§7/rules <items | enchantments | potions>§r")).prefix(getPrefix()).toString());
 
         List<String> itemRules = new ArrayList<>();
         List<String> configItemRules = configuration.getStringList("messages.rules.items");
@@ -154,7 +154,7 @@ public class MessageConfig {
         ruleMessages.put(Message.RULES_POTIONS, potionRules);
 
         /* === Team === */
-        messages.put(Message.TEAM_USAGE, new ChatMessage(configuration.getString("messages.team.usage", "§7/team <list|join <name>|rename <name>|leave>§r")).prefix(getPrefix()).toString());
+        messages.put(Message.TEAM_USAGE, new ChatMessage(configuration.getString("messages.team.usage", "§7/team <list | join <name> | rename <name> | leave>§r")).prefix(getPrefix()).toString());
         messages.put(Message.TEAM_JOIN_HINT, new ChatMessage(configuration.getString("messages.team.join_hint", "§aDu kannst einem Team mit §e/team join <name> §abeitreten.§r")).prefix(getPrefix()).toString());
         messages.put(Message.TEAM_RENAME_HINT, new ChatMessage(configuration.getString("messages.team.rename_hint", "§aDu kannst dein Team mit §e/team rename <name> §aumbenennen.§r")).prefix(getPrefix()).toString());
 
