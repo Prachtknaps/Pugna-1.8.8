@@ -136,13 +136,13 @@ public final class PlayerUtils {
             BookMeta infoBookMeta = (BookMeta) infoBookItem.getItemMeta();
             if (infoBookMeta != null) {
                 infoBookMeta.setTitle(getPugnaConfig().getInfoBookItemName());
-                infoBookMeta.setAuthor("DerStresser");
+                infoBookMeta.setAuthor("§bStresserMC.net");
 
                 infoBookMeta.addPage(
-                    "§lWillkommen bei §6Pugna§r!\n\n" +
-                    "§8Pugna ist ein Spielmodus, der an das YouTuber-Projekt\n" +
-                    "§3VARO §8angelehnt ist.\n\n" +
-                    "§8Spiele taktisch und überlebe!"
+                    "§3§lWillkommen bei\n§6§lMinecraft Pugna§r!\n\n" +
+                    "§0Pugna ist ein Spielmodus, der an das YouTuber-Projekt\n" +
+                    "§dVARO §0angelehnt ist.\n\n" +
+                    "§0Spiele taktisch und überlebe!"
                 );
 
                 GameTimer gameTimer = getGameManager().getGameTimer();
@@ -156,7 +156,7 @@ public final class PlayerUtils {
                     final int totalPages = (events.size() + perPage - 1) / perPage;
 
                     for (int pageIndex = 0; pageIndex < totalPages; pageIndex++) {
-                        StringBuilder page = new StringBuilder().append("§d§lSpiel-Events ").append(toRoman(pageIndex + 1)).append("§r:\n\n");
+                        StringBuilder page = new StringBuilder().append("§5§lSpiel-Events ").append(toRoman(pageIndex + 1)).append("§r:\n\n");
 
                         int fromIndex = pageIndex * perPage;
                         int toIndex = Math.min(events.size(), fromIndex + perPage);
@@ -165,7 +165,7 @@ public final class PlayerUtils {
                             GameEvent event = events.get(i);
                             String time = GameTimer.formatTime(event.getEventSeconds());
 
-                            page.append("§8• §5").append(event.getEventName()).append("\n").append("  §6").append(time).append("\n\n");
+                            page.append("§8• §d§l").append(event.getEventName()).append("\n").append("  §3").append(time).append("\n\n");
                         }
 
                         infoBookMeta.addPage(page.toString());
@@ -174,25 +174,25 @@ public final class PlayerUtils {
 
                 infoBookMeta.addPage(
                     "§c§lVerbotene Items§r:\n\n" +
-                    "§0• §4Sattel\n" +
-                    "§0• §4OP-Apfel\n\n" +
+                    "§8• §4Sattel\n" +
+                    "§8• §4OP-Apfel\n\n" +
                     "§8Verbotene Items werden aus dem Inventar entfernt."
                 );
 
                 infoBookMeta.addPage(
                     "§c§lVerbotene Verzauberungen§r:\n\n" +
-                    "§0• §4Verbrennung\n" +
-                    "§0• §4Flamme\n" +
-                    "§0• §4Wasserläufer\n" +
-                    "§0• §4Unendlichkeit\n" +
-                    "§0• §4Dornen\n\n" +
+                    "§8• §4Verbrennung\n" +
+                    "§8• §4Flamme\n" +
+                    "§8• §4Wasserläufer\n" +
+                    "§8• §4Unendlichkeit\n" +
+                    "§8• §4Dornen\n\n" +
                     "§8Items mit verbotenen Verzauberungen werden aus dem Inventar entfernt."
                 );
 
                 infoBookMeta.addPage(
-                    "§a§lErlaubte Tränke§r:\n\n" +
-                    "§0• §2Heilung I & II §8(nur trinkbar)\n" +
-                    "§0• §2Schwäche §8(trinkbar & werfbar)\n\n" +
+                    "§2§lErlaubte Tränke§r:\n\n" +
+                    "§8• §2Heilung I & II §o(nur trinkbar)\n" +
+                    "§8• §2Schwäche §o(trinkbar & werfbar)\n\n" +
                     "§cAlle anderen Tränke sind verboten.\n\n" +
                     "§8Verbotene Tränke werden aus dem Inventar entfernt."
                 );
