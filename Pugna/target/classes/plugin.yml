@@ -17,6 +17,10 @@ commands:
     description: "Send yourself back to the hub"
     usage: "/hub"
 
+  rules:
+    description: "Shows the Pugna rules (items, enchantments, potions)."
+    usage: "/rules <items|enchantments|potions>"
+
   team:
     description: "Manage or join teams"
     usage: "/team <list|join|leave|rename>"

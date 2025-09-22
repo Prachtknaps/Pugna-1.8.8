@@ -18,6 +18,12 @@ public enum Message {
     GUI_ENABLED,
     GUI_DISABLED,
 
+    /* === Rules === */
+    RULES_USAGE,
+    RULES_ITEMS,
+    RULES_ENCHANTMENTS,
+    RULES_POTIONS,
+
     /* === Team === */
     TEAM_USAGE,
     TEAM_JOIN_HINT,

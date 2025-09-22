@@ -51,3 +51,4 @@ at\minecraft\pugna\teams\Team.class
 at\minecraft\pugna\config\PugnaConfig.class
 at\minecraft\pugna\game\events\EnemyRevealEvent.class
 at\minecraft\pugna\utils\CountdownUtils.class
+at\minecraft\pugna\commands\RulesCommand.class

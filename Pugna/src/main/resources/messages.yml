@@ -11,11 +11,38 @@ messages:
     not_active: "{prefix} §cAktuell läuft kein Countdown.§r"
     update_success: "{prefix} §aDer Countdown wurde auf §e{time} §a{unit} gesetzt.§r"
   gui:
-    usage: "§7/gui enable/disable§r"
+    usage: "§7/gui <enable|disable>§r"
     enabled: "{prefix} §aDeine GUI wurde aktiviert.§r"
     disabled: "{prefix} §cDeine GUI wurde deaktiviert.§r"
+  rules:
+    usage: "§7/rules <items|enchantments|potions>§r"
+    items: [
+      "{prefix} §6Pugna-Regeln:§r",
+      "§cFolgende Items sind verboten:§r",
+      "§8• §4Sattel§r",
+      "§8• §4OP-Apfel§r",
+      "§8Verbotene Items werden aus dem Inventar entfernt.§r"
+    ]
+    enchantments: [
+      "{prefix} §6Pugna-Regeln:§r",
+      "§cFolgende Verzauberungen sind verboten:§r",
+      "§8• §4Verbrennung§r",
+      "§8• §4Flamme§r",
+      "§8• §4Wasserläufer§r",
+      "§8• §4Unendlichkeit§r",
+      "§8• §4Dornen§r",
+      "§8Items mit verbotenen Verzauberungen werden aus dem Inventar entfernt.§r"
+    ]
+    potions: [
+      "{prefix} §6Pugna-Regeln:§r",
+      "§aFolgende Tränke sind erlaubt:§r",
+      "§8• §2Heilung I & II §o(nur trinkbar)§r",
+      "§8• §2Schwäche §o(trinkbar & werfbar)§r",
+      "§cAlle anderen Tränke sind verboten.§r",
+      "§8Verbotene Tränke werden aus dem Inventar entfernt.§r"
+    ]
   team:
-    usage: "§7/team list, /team join <name>, /team rename <name>, /team leave§r"
+    usage: "§7/team <list|join <name>|rename <name>|leave>§r"
     join_hint: "§aDu kannst einem Team mit §e/team join <name> §abeitreten.§r"
     rename_hint: "§aDu kannst dein Team mit §e/team rename <name> §aumbenennen.§r"
     list_header: "{prefix} §aAktuell gibt es folgende Teams:§r"

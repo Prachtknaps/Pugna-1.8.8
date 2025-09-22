@@ -1,9 +1,6 @@
 package at.minecraft.pugna;
 
-import at.minecraft.pugna.commands.CountdownCommand;
-import at.minecraft.pugna.commands.GuiCommand;
-import at.minecraft.pugna.commands.HubCommand;
-import at.minecraft.pugna.commands.TeamCommand;
+import at.minecraft.pugna.commands.*;
 import at.minecraft.pugna.config.GameConfig;
 import at.minecraft.pugna.config.MessageConfig;
 import at.minecraft.pugna.config.PugnaConfig;
@@ -100,6 +97,7 @@ public final class Pugna extends JavaPlugin {
         getCommand("countdown").setExecutor(new CountdownCommand(messageConfig, gameManager));
         getCommand("gui").setExecutor(new GuiCommand(messageConfig, gameManager));
         getCommand("hub").setExecutor(new HubCommand(messageConfig));
+        getCommand("rules").setExecutor(new RulesCommand(messageConfig));
         getCommand("team").setExecutor(new TeamCommand(messageConfig, gameManager));
 
         /* === Logging === */
