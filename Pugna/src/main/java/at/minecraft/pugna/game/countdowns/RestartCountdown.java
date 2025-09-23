@@ -26,7 +26,7 @@ public class RestartCountdown extends BukkitRunnable {
     /* === Operations === */
 
     public void start() {
-        runTaskTimer(Pugna.getInstance(), 0L, 20L);
+        runTaskTimerAsynchronously(Pugna.getInstance(), 0L, 20L);
     }
 
     @Override

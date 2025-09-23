@@ -68,7 +68,7 @@ public class GameTimer extends BukkitRunnable {
         }
 
         this.running = true;
-        runTaskTimer(Pugna.getInstance(), 0L, 20L);
+        runTaskTimerAsynchronously(Pugna.getInstance(), 0L, 20L);
     }
 
     public void setSeconds(int seconds) {
@@ -150,7 +150,7 @@ public class GameTimer extends BukkitRunnable {
             timeUntilNextEvent = "—";
         }
 
-        Bukkit.getScheduler().runTask(Pugna.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(Pugna.getInstance(), () -> {
             Scoreboard sharedScoreboard = scoreboardManager.getNewScoreboard();
             Objective objective = sharedScoreboard.registerNewObjective("pugna", "dummy");
             objective.setDisplaySlot(org.bukkit.scoreboard.DisplaySlot.SIDEBAR);
@@ -199,7 +199,7 @@ public class GameTimer extends BukkitRunnable {
     }
 
     private void handleForbiddenItemRemove() {
-        Bukkit.getScheduler().runTask(Pugna.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(Pugna.getInstance(), () -> {
             for (Player player : PlayerUtils.getOnlineAlivePlayers()) {
                 PlayerInventory inventory = player.getInventory();
                 int removed = 0;

@@ -269,8 +269,6 @@ public class GameConfig {
             return;
         }
 
-        FileConfiguration configuration = Pugna.getInstance().getConfig();
-
         String key = location.getWorld().getName() + "_" + location.getBlockX() + "_" + location.getBlockY() + "_" + location.getBlockZ();
 
         configuration.set("world.protected_areas." + key + ".world", location.getWorld().getName());
@@ -286,8 +284,6 @@ public class GameConfig {
         if (locations == null || locations.isEmpty()) {
             return;
         }
-
-        FileConfiguration configuration = Pugna.getInstance().getConfig();
 
         for (Location location : locations) {
             if (location == null || location.getWorld() == null) {
