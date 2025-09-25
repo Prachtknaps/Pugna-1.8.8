@@ -43,6 +43,7 @@ at\minecraft\pugna\world\spawn\PlayerSpawn.class
 at\minecraft\pugna\listeners\ConnectionListener.class
 at\minecraft\pugna\utils\FileSystemUtils.class
 at\minecraft\pugna\commands\TeamCommand.class
+at\minecraft\pugna\game\timers\GameTimer$Sidebar.class
 at\minecraft\pugna\gui\TeamSelectionGUI.class
 at\minecraft\pugna\Pugna.class
 at\minecraft\pugna\game\timers\GameTimer$1.class

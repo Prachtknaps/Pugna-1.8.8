@@ -9,6 +9,7 @@ import at.minecraft.pugna.game.GameState;
 import at.minecraft.pugna.gui.NavigationGUI;
 import at.minecraft.pugna.gui.TeamSelectionGUI;
 import at.minecraft.pugna.utils.ChatUtils;
+import at.minecraft.pugna.utils.ItemUtils;
 import at.minecraft.pugna.utils.PlayerUtils;
 import at.minecraft.pugna.utils.SoundUtils;
 import org.bukkit.GameMode;
@@ -150,6 +151,17 @@ public class InteractionListener implements Listener {
 
         if (PlayerUtils.isSpectator(player)) {
             event.setCancelled(true);
+            return;
+        }
+
+        /* === Handle forbidden items === */
+        if (event.getItem() != null && event.getItem().getItemStack() != null && ItemUtils.shouldBlock(event.getItem().getItemStack())) {
+            event.setCancelled(true);
+
+            event.getItem().remove();
+            String infoMessage = messageConfig.getChatMessage(Message.FORBIDDEN_ITEMS_REMOVED).count(event.getItem().getItemStack().getAmount()).toString();
+
+            player.sendMessage(infoMessage);
             return;
         }
 

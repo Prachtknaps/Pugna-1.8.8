@@ -276,7 +276,7 @@ public final class PlayerUtils {
     }
 
     public static void handleVisibility() {
-        Bukkit.getScheduler().runTaskLaterAsynchronously(getPlugin(), () -> {
+        Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 for (Player other : Bukkit.getOnlinePlayers()) {
                     if (isSpectator(player)) {
@@ -290,7 +290,7 @@ public final class PlayerUtils {
     }
 
     public static void showAllPlayers() {
-        Bukkit.getScheduler().runTaskLaterAsynchronously(getPlugin(), () -> {
+        Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 for (Player other : Bukkit.getOnlinePlayers()) {
                     if (other.equals(player)) {

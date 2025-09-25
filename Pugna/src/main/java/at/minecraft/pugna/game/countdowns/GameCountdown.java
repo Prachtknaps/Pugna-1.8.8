@@ -35,7 +35,7 @@ public class GameCountdown extends BukkitRunnable {
     }
 
     public void start() {
-        runTaskTimerAsynchronously(Pugna.getInstance(), 0L, 20L);
+        runTaskTimer(Pugna.getInstance(), 0L, 20L);
     }
 
     @Override

@@ -1,43 +1,43 @@
 package at.minecraft.pugna.game.timers;
 
 import at.minecraft.pugna.Pugna;
-import at.minecraft.pugna.chat.Message;
 import at.minecraft.pugna.config.GameConfig;
 import at.minecraft.pugna.config.MessageConfig;
 import at.minecraft.pugna.config.PugnaConfig;
 import at.minecraft.pugna.game.GameManager;
 import at.minecraft.pugna.game.GameState;
 import at.minecraft.pugna.game.events.*;
-import at.minecraft.pugna.utils.ItemUtils;
 import at.minecraft.pugna.utils.PlayerUtils;
 import at.minecraft.pugna.world.WorldManager;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
 
 import java.util.*;
 
 public class GameTimer extends BukkitRunnable {
-    private final MessageConfig messageConfig;
     private final GameConfig gameConfig;
     private final WorldManager worldManager;
     private final GameManager gameManager;
     private int seconds;
+
+    private Scoreboard sharedScoreboard = null;
+    private Scoreboard emptyScoreboard = null;
+    private Sidebar sidebar = null;
+    private boolean sidebarInitialized = false;
 
     private final List<UUID> blockedGUIPlayers;
     private final List<GameEvent> events;
     private boolean running = false;
 
     public GameTimer(PugnaConfig pugnaConfig, MessageConfig messageConfig, GameConfig gameConfig, WorldManager worldManager, GameManager gameManager) {
-        this.messageConfig = messageConfig;
         this.gameConfig = gameConfig;
         this.worldManager = worldManager;
         this.gameManager = gameManager;
@@ -68,7 +68,7 @@ public class GameTimer extends BukkitRunnable {
         }
 
         this.running = true;
-        runTaskTimerAsynchronously(Pugna.getInstance(), 0L, 20L);
+        runTaskTimer(Pugna.getInstance(), 0L, 20L);
     }
 
     public void setSeconds(int seconds) {
@@ -88,10 +88,6 @@ public class GameTimer extends BukkitRunnable {
         }
 
         if (gameManager.getState() == GameState.GAME_RUNNING) {
-            if (seconds % 5 == 0) {
-                handleForbiddenItemRemove();
-            }
-
             if (seconds % 10 == 0) {
                 gameConfig.saveSeconds(seconds);
                 World pugnaWorld = worldManager.getPugnaWorld();
@@ -120,8 +116,8 @@ public class GameTimer extends BukkitRunnable {
     }
 
     private void handleGUI() {
-        ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
-        if (scoreboardManager == null) {
+        ensureSidebarInitialized();
+        if (!sidebarInitialized) {
             return;
         }
 
@@ -129,65 +125,47 @@ public class GameTimer extends BukkitRunnable {
         final int teamsCount = gameManager.getTeams().size();
         final String formattedTime = formatTime(this.seconds);
 
-        double borderSize;
+        double borderSizeBlocks;
         if (worldManager.getPugnaWorld() != null && worldManager.getPugnaWorld().getWorldBorder() != null) {
-            borderSize = worldManager.getPugnaWorld().getWorldBorder().getSize();
+            borderSizeBlocks = worldManager.getPugnaWorld().getWorldBorder().getSize();
         } else {
-            borderSize = gameConfig.getCurrentBorderSize();
+            borderSizeBlocks = gameConfig.getCurrentBorderSize();
         }
-        final int borderBlocks = (int) Math.round(borderSize);
+        final int borderBlocks = (int) Math.round(borderSizeBlocks);
 
         final String nextEventLabel;
         final String timeUntilNextEvent;
 
         GameState currentState = gameManager.getState();
         if (currentState == GameState.GAME_RUNNING || currentState == GameState.GAME_PAUSED) {
-            NextEventInfo next = findNextEvent(Math.max(0, this.seconds));
-            nextEventLabel = next.getEventName();
-            timeUntilNextEvent = (next.getSecondsUntil() >= 0) ? formatTime(next.getSecondsUntil()) : "—";
+            NextEventInfo nextInfo = findNextEvent(Math.max(0, this.seconds));
+            nextEventLabel = nextInfo.getEventName();
+            timeUntilNextEvent = (nextInfo.getSecondsUntil() >= 0) ? formatTime(nextInfo.getSecondsUntil()) : "—";
         } else {
             nextEventLabel = "—";
             timeUntilNextEvent = "—";
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(Pugna.getInstance(), () -> {
-            Scoreboard sharedScoreboard = scoreboardManager.getNewScoreboard();
-            Objective objective = sharedScoreboard.registerNewObjective("pugna", "dummy");
-            objective.setDisplaySlot(org.bukkit.scoreboard.DisplaySlot.SIDEBAR);
-            objective.setDisplayName("§6§lPugna");
+        sidebar.setLineText("time_value", "§f" + formattedTime);
+        sidebar.setLineText("teams_value", "§f" + teamsCount + " §7(" + alivePlayersCount + ")");
+        sidebar.setLineText("border_value", "§f" + borderBlocks);
+        sidebar.setLineText("next_event_name", "§d" + nextEventLabel);
+        sidebar.setLineText("next_event_time", "§f" + timeUntilNextEvent);
 
-            int line = 14;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            boolean isBlocked = blockedGUIPlayers.contains(player.getUniqueId());
 
-            /* === Time === */
-            objective.getScore("§0").setScore(line--);
-            objective.getScore("§eZeit                ").setScore(line--);
-            objective.getScore("§f" + formattedTime).setScore(line--);
-
-            /* === Teams === */
-            objective.getScore("§1").setScore(line--);
-            objective.getScore("§eTeams               ").setScore(line--);
-            objective.getScore("§f" + teamsCount + " §7(" + alivePlayersCount + " Spieler)").setScore(line--);
-
-            /* === Border === */
-            objective.getScore("§2").setScore(line--);
-            objective.getScore("§eBorder              ").setScore(line--);
-            objective.getScore("§f" + borderBlocks + " §7Blöcke").setScore(line--);
-
-            /* === Next Event === */
-            objective.getScore("§3").setScore(line--);
-            objective.getScore("§eNächstes Event      ").setScore(line--);
-            objective.getScore("§d" + nextEventLabel).setScore(line--);
-            objective.getScore("§f" + timeUntilNextEvent).setScore(line--);
-            objective.getScore("§4").setScore(line--);
-
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                if (blockedGUIPlayers.contains(player.getUniqueId())) {
-                    player.setScoreboard(scoreboardManager.getNewScoreboard());
-                    continue;
+            if (isBlocked) {
+                if (player.getScoreboard() != this.emptyScoreboard) {
+                    player.setScoreboard(this.emptyScoreboard);
                 }
-                player.setScoreboard(sharedScoreboard);
+                continue;
             }
-        });
+
+            if (player.getScoreboard() != this.sharedScoreboard) {
+                player.setScoreboard(this.sharedScoreboard);
+            }
+        }
     }
 
     public void enableGUIFor(Player player) {
@@ -198,48 +176,159 @@ public class GameTimer extends BukkitRunnable {
         blockedGUIPlayers.add(player.getUniqueId());
     }
 
-    private void handleForbiddenItemRemove() {
-        Bukkit.getScheduler().runTaskAsynchronously(Pugna.getInstance(), () -> {
-            for (Player player : PlayerUtils.getOnlineAlivePlayers()) {
-                PlayerInventory inventory = player.getInventory();
-                int removed = 0;
+    /* === Helpers === */
 
-                ItemStack[] contents = inventory.getContents();
-                for (int i = 0; i < contents.length; i++) {
-                    ItemStack itemStack = contents[i];
-                    if (itemStack != null && itemStack.getType() != Material.AIR && ItemUtils.shouldBlock(itemStack)) {
-                        removed += itemStack.getAmount();
-                        contents[i] = null;
-                    }
-                }
-                inventory.setContents(contents);
+    private static final class Sidebar {
+        private final Scoreboard scoreboard;
+        private final Objective objective;
 
-                ItemStack[] armor = inventory.getArmorContents();
-                for (int i = 0; i < armor.length; i++) {
-                    ItemStack itemStack = armor[i];
-                    if (itemStack != null && itemStack.getType() != Material.AIR && ItemUtils.shouldBlock(itemStack)) {
-                        removed += itemStack.getAmount();
-                        armor[i] = null;
-                    }
-                }
-                inventory.setArmorContents(armor);
+        private final Map<String, Team> teamsByKey = new LinkedHashMap<>();
+        private final Map<String, String> entryByKey = new LinkedHashMap<>();
 
-                ItemStack cursor = player.getItemOnCursor();
-                if (cursor != null && cursor.getType() != Material.AIR && ItemUtils.shouldBlock(cursor)) {
-                    removed += cursor.getAmount();
-                    player.setItemOnCursor(null);
-                }
+        private final Deque<String> availableEntryTokens = new ArrayDeque<>();
 
-                if (removed > 0) {
-                    String message = messageConfig.getChatMessage(Message.FORBIDDEN_ITEMS_REMOVED).count(removed).toString();
-                    player.sendMessage(message);
-                    player.updateInventory();
-                }
+        private Sidebar(Scoreboard scoreboard, Objective objective) {
+            this.scoreboard = scoreboard;
+            this.objective = objective;
+
+            ChatColor[] palette = new ChatColor[] {
+                    ChatColor.BLACK, ChatColor.DARK_BLUE, ChatColor.DARK_GREEN, ChatColor.DARK_AQUA,
+                    ChatColor.DARK_RED, ChatColor.DARK_PURPLE, ChatColor.GOLD, ChatColor.GRAY,
+                    ChatColor.DARK_GRAY, ChatColor.BLUE, ChatColor.GREEN, ChatColor.AQUA,
+                    ChatColor.RED, ChatColor.LIGHT_PURPLE, ChatColor.YELLOW
+            };
+
+            for (ChatColor chatColor : palette) {
+                availableEntryTokens.add(chatColor.toString() + ChatColor.RESET);
             }
-        });
+        }
+
+        public void registerStaticLine(String key, String initialText, int scoreValue) {
+            Team lineTeam = ensureTeamForKey(key);
+            String entryToken = ensureEntryForKey(key);
+
+            this.objective.getScore(entryToken).setScore(scoreValue);
+
+            setTeamText(lineTeam, initialText);
+        }
+
+        public void registerDynamicLine(String key, int scoreValue) {
+            Team lineTeam = ensureTeamForKey(key);
+            String entryToken = ensureEntryForKey(key);
+
+            this.objective.getScore(entryToken).setScore(scoreValue);
+
+            setTeamText(lineTeam, "");
+        }
+
+        public void setLineText(String key, String text) {
+            Team lineTeam = this.teamsByKey.get(key);
+            if (lineTeam == null) {
+                return;
+            }
+
+            if (text == null) {
+                text = "";
+            }
+
+            setTeamText(lineTeam, text);
+        }
+
+        private Team ensureTeamForKey(String key) {
+            Team existing = this.teamsByKey.get(key);
+            if (existing != null) {
+                return existing;
+            }
+
+            Team team = this.scoreboard.getTeam(key);
+            if (team == null) {
+                team = this.scoreboard.registerNewTeam(key);
+            }
+
+            this.teamsByKey.put(key, team);
+            return team;
+        }
+
+        private String ensureEntryForKey(String key) {
+            String existing = this.entryByKey.get(key);
+            if (existing != null) {
+                return existing;
+            }
+
+            String token = this.availableEntryTokens.isEmpty() ? (ChatColor.RESET.toString()) : this.availableEntryTokens.removeFirst();
+
+            Team team = ensureTeamForKey(key);
+            team.addEntry(token);
+
+            this.entryByKey.put(key, token);
+            return token;
+        }
+
+        private void setTeamText(Team team, String fullText) {
+            String prefix = fullText;
+            String suffix = "";
+
+            if (prefix.length() > 16) {
+                prefix = fullText.substring(0, 16);
+                suffix = fullText.substring(16);
+            }
+
+            if (suffix.length() > 16) {
+                suffix = suffix.substring(0, 16);
+            }
+
+            team.setPrefix(prefix);
+            team.setSuffix(suffix);
+        }
     }
 
-    /* === Helpers === */
+    private void ensureSidebarInitialized() {
+        if (sidebarInitialized) {
+            return;
+        }
+
+        ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
+        if (scoreboardManager == null) {
+            return;
+        }
+
+        this.sharedScoreboard = scoreboardManager.getNewScoreboard();
+        this.emptyScoreboard = scoreboardManager.getNewScoreboard();
+
+        Objective sharedObjective = this.sharedScoreboard.getObjective("pugna");
+        if (sharedObjective != null) {
+            sharedObjective.unregister();
+        }
+
+        sharedObjective = this.sharedScoreboard.registerNewObjective("pugna", "dummy");
+        sharedObjective.setDisplaySlot(org.bukkit.scoreboard.DisplaySlot.SIDEBAR);
+        sharedObjective.setDisplayName("§6§lPugna");
+
+        this.sidebar = new Sidebar(this.sharedScoreboard, sharedObjective);
+
+        int currentScore = 14;
+
+        sidebar.registerStaticLine("sep_time_top", "§0", currentScore--);
+        sidebar.registerStaticLine("time_title", "§eZeit                ", currentScore--);
+        sidebar.registerDynamicLine("time_value", currentScore--);
+
+        sidebar.registerStaticLine("sep_teams_top", "§1", currentScore--);
+        sidebar.registerStaticLine("teams_title", "§eTeams               ", currentScore--);
+        sidebar.registerDynamicLine("teams_value", currentScore--);
+
+        sidebar.registerStaticLine("sep_border_top", "§2", currentScore--);
+        sidebar.registerStaticLine("border_title", "§eBorder              ", currentScore--);
+        sidebar.registerDynamicLine("border_value", currentScore--);
+
+        sidebar.registerStaticLine("sep_event_top", "§3", currentScore--);
+        sidebar.registerStaticLine("next_title", "§eNächstes Event      ", currentScore--);
+        sidebar.registerDynamicLine("next_event_name", currentScore--);
+        sidebar.registerDynamicLine("next_event_time", currentScore--);
+
+        sidebar.registerStaticLine("sep_bottom", "§4", currentScore--);
+
+        sidebarInitialized = true;
+    }
 
     public static String formatTime(int totalSeconds) {
         int hours = totalSeconds / 3600;
