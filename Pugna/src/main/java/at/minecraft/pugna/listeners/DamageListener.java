@@ -139,7 +139,7 @@ public class DamageListener implements Listener {
 
             String message = messageConfig.getChatMessage(Message.PLAYER_KILLED_OTHERS).player("Friedolin").killer(killer.getName()).toString();
             ChatUtils.broadcast(message);
-            SoundUtils.broadcast(Sound.CHICKEN_HURT, 1.0f, 1.0f);
+            SoundUtils.broadcast(Sound.AMBIENCE_THUNDER, 0.75f, 1.0f);
 
             return;
         }
@@ -150,7 +150,7 @@ public class DamageListener implements Listener {
 
             String message = messageConfig.getChatMessage(Message.PLAYER_KILLED_OTHERS).player("Berta").killer(killer.getName()).toString();
             ChatUtils.broadcast(message);
-            SoundUtils.broadcast(Sound.COW_HURT, 1.0f, 1.0f);
+            SoundUtils.broadcast(Sound.AMBIENCE_THUNDER, 0.75f, 1.0f);
 
             return;
         }
@@ -179,6 +179,7 @@ public class DamageListener implements Listener {
         }
 
         ChatUtils.broadcast(globalMessage);
+        SoundUtils.broadcast(Sound.AMBIENCE_THUNDER, 0.75f, 1.0f);
         player.sendMessage(playerMessage);
 
         team.remove(player);

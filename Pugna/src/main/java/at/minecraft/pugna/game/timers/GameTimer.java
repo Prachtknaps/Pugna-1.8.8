@@ -23,6 +23,7 @@ import org.bukkit.scoreboard.Team;
 import java.util.*;
 
 public class GameTimer extends BukkitRunnable {
+    private final PugnaConfig pugnaConfig;
     private final GameConfig gameConfig;
     private final WorldManager worldManager;
     private final GameManager gameManager;
@@ -38,6 +39,7 @@ public class GameTimer extends BukkitRunnable {
     private boolean running = false;
 
     public GameTimer(PugnaConfig pugnaConfig, MessageConfig messageConfig, GameConfig gameConfig, WorldManager worldManager, GameManager gameManager) {
+        this.pugnaConfig = pugnaConfig;
         this.gameConfig = gameConfig;
         this.worldManager = worldManager;
         this.gameManager = gameManager;
@@ -121,8 +123,8 @@ public class GameTimer extends BukkitRunnable {
             return;
         }
 
+        final int aliveTeamsCount = (int) gameManager.getTeams().stream().filter(team -> !team.isEmpty()).count();
         final int alivePlayersCount = PlayerUtils.getAlivePlayersCount();
-        final int teamsCount = gameManager.getTeams().size();
         final String formattedTime = formatTime(this.seconds);
 
         double borderSizeBlocks;
@@ -147,8 +149,8 @@ public class GameTimer extends BukkitRunnable {
         }
 
         sidebar.setLineText("time_value", "§f" + formattedTime);
-        sidebar.setLineText("teams_value", "§f" + teamsCount + " §7(" + alivePlayersCount + ")");
-        sidebar.setLineText("border_value", "§f" + borderBlocks);
+        sidebar.setLineText("teams_value", "§f" + aliveTeamsCount + "/" + pugnaConfig.getMaxTeamsCount() + " §7(" + alivePlayersCount + " Spieler)");
+        sidebar.setLineText("border_value", "§f" + borderBlocks + "x" + borderBlocks);
         sidebar.setLineText("next_event_name", "§d" + nextEventLabel);
         sidebar.setLineText("next_event_time", "§f" + timeUntilNextEvent);
 
@@ -165,6 +167,19 @@ public class GameTimer extends BukkitRunnable {
             if (player.getScoreboard() != this.sharedScoreboard) {
                 player.setScoreboard(this.sharedScoreboard);
             }
+        }
+    }
+
+    public void updateGuiNow() {
+        ensureSidebarInitialized();
+        if (!sidebarInitialized) {
+            return;
+        }
+
+        if (Bukkit.isPrimaryThread()) {
+            handleGUI();
+        } else {
+            Bukkit.getScheduler().runTask(Pugna.getInstance(), this::handleGUI);
         }
     }
 
@@ -199,7 +214,7 @@ public class GameTimer extends BukkitRunnable {
             };
 
             for (ChatColor chatColor : palette) {
-                availableEntryTokens.add(chatColor.toString() + ChatColor.RESET);
+                availableEntryTokens.add(chatColor.toString());
             }
         }
 
@@ -265,16 +280,34 @@ public class GameTimer extends BukkitRunnable {
         }
 
         private void setTeamText(Team team, String fullText) {
-            String prefix = fullText;
-            String suffix = "";
-
-            if (prefix.length() > 16) {
-                prefix = fullText.substring(0, 16);
-                suffix = fullText.substring(16);
+            if (fullText == null) {
+                fullText = "";
             }
 
+            if (fullText.length() <= 16) {
+                team.setPrefix(fullText);
+                team.setSuffix("");
+                return;
+            }
+
+            int cutIndex = 16;
+
+            if (fullText.charAt(cutIndex - 1) == ChatColor.COLOR_CHAR) {
+                cutIndex -= 1;
+            }
+
+            String prefix = fullText.substring(0, cutIndex);
+            String remainder = fullText.substring(cutIndex);
+
+            String colorCarry = ChatColor.getLastColors(prefix);
+            String suffix = colorCarry + remainder;
+
             if (suffix.length() > 16) {
-                suffix = suffix.substring(0, 16);
+                int suffixCut = 16;
+                if (suffix.charAt(suffixCut - 1) == ChatColor.COLOR_CHAR) {
+                    suffixCut -= 1;
+                }
+                suffix = suffix.substring(0, suffixCut);
             }
 
             team.setPrefix(prefix);

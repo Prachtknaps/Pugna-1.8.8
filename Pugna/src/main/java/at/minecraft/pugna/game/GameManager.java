@@ -1,5 +1,6 @@
 package at.minecraft.pugna.game;
 
+import at.minecraft.pugna.Pugna;
 import at.minecraft.pugna.chat.Message;
 import at.minecraft.pugna.config.GameConfig;
 import at.minecraft.pugna.config.MessageConfig;
@@ -182,6 +183,11 @@ public class GameManager {
 
             TeamUtils.removeEmptyTeams();
             gameConfig.saveTeams(teams);
+
+            if (gameTimer != null) {
+                gameTimer.updateGuiNow();
+            }
+
             checkForWinner();
         }
     }
@@ -210,7 +216,11 @@ public class GameManager {
             gameCountdown.cancel();
         }
 
+        if (gameTimer != null) {
+            gameTimer.updateGuiNow();
+        }
+
         ChatUtils.broadcast(message);
-        setState(GameState.RESTARTING);
+        Bukkit.getScheduler().runTaskLater(Pugna.getInstance(), () -> setState(GameState.RESTARTING), 1L);
     }
 }
