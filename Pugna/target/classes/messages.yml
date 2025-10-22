@@ -110,4 +110,5 @@ messages:
   kick:
     server_full: "{prefix} §cDer Server ist voll - bitte warte.§r"
     hub_command: "{prefix} §cDu hast den Server verlassen.§r"
+    playtime_window: "{prefix} §cDer Server kann nur von §e{start} §cbis §e{end} §cUhr betreten werden.§r"
     server_restarting: "{prefix} §cDer Server wird neu gestartet.§r"

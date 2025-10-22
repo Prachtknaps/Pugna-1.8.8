@@ -8,6 +8,7 @@ import at.minecraft.pugna.game.GameManager;
 import at.minecraft.pugna.game.GameState;
 import at.minecraft.pugna.game.events.*;
 import at.minecraft.pugna.utils.PlayerUtils;
+import at.minecraft.pugna.utils.PlaytimeUtils;
 import at.minecraft.pugna.world.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -85,6 +86,8 @@ public class GameTimer extends BukkitRunnable {
 
     @Override
     public void run() {
+        enforcePlaytimeWindow();
+
         if (!Bukkit.getOnlinePlayers().isEmpty()) {
             handleGUI();
         }
@@ -115,6 +118,18 @@ public class GameTimer extends BukkitRunnable {
 
             seconds++;
         }
+    }
+
+    private void enforcePlaytimeWindow() {
+        if (Bukkit.getOnlinePlayers().isEmpty()) {
+            return;
+        }
+
+        if (PlaytimeUtils.isWithinPlaytimeWindow()) {
+            return;
+        }
+
+        PlayerUtils.kickAllPlayers(PlaytimeUtils.getPlaytimeKickMessage());
     }
 
     private void handleGUI() {

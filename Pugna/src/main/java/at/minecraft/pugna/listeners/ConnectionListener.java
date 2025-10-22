@@ -7,10 +7,7 @@ import at.minecraft.pugna.config.PugnaConfig;
 import at.minecraft.pugna.game.GameManager;
 import at.minecraft.pugna.game.GameState;
 import at.minecraft.pugna.teams.Team;
-import at.minecraft.pugna.utils.ChatUtils;
-import at.minecraft.pugna.utils.NetherUtils;
-import at.minecraft.pugna.utils.PlayerUtils;
-import at.minecraft.pugna.utils.TeamUtils;
+import at.minecraft.pugna.utils.*;
 import at.minecraft.pugna.world.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -18,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class ConnectionListener implements Listener {
@@ -34,6 +32,21 @@ public class ConnectionListener implements Listener {
     }
 
     /* === Events === */
+
+    @EventHandler
+    public void onPlayerLogin(PlayerLoginEvent event) {
+        Player player = event.getPlayer();
+
+        if (pugnaConfig.isDevelopment() && player.isOp()) {
+            return;
+        }
+
+        if (PlaytimeUtils.isWithinPlaytimeWindow()) {
+            return;
+        }
+
+        event.disallow(PlayerLoginEvent.Result.KICK_OTHER, PlaytimeUtils.getPlaytimeKickMessage());
+    }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {

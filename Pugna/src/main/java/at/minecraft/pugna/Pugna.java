@@ -56,6 +56,8 @@ public final class Pugna extends JavaPlugin {
 
         /* === Configuration === */
         pugnaConfig = new PugnaConfig(this);
+        pugnaConfig.saveDefaultConfig();
+        pugnaConfig.reload();
         pugnaConfig.setup();
 
         gameConfig = new GameConfig(this);

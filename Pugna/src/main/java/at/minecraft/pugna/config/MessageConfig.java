@@ -233,6 +233,7 @@ public class MessageConfig {
         /* === Kick === */
         messages.put(Message.KICK_SERVER_FULL, new ChatMessage(configuration.getString("messages.kick.server_full", "{prefix} §cDer Server ist voll - bitte warte.§r")).prefix(getPrefix()).toString());
         messages.put(Message.KICK_HUB_COMMAND, new ChatMessage(configuration.getString("messages.kick.hub_command", "{prefix} §cDu hast den Server verlassen.§r")).prefix(getPrefix()).toString());
+        messages.put(Message.KICK_PLAYTIME_WINDOW, new ChatMessage(configuration.getString("messages.kick.playtime_window", "{prefix} §cDer Server kann nur von §e{start} §cbis §e{end} §cUhr betreten werden.§r")).prefix(getPrefix()).toString());
         messages.put(Message.KICK_SERVER_RESTARTING, new ChatMessage(configuration.getString("messages.kick.server_restarting", "{prefix} §cDer Server wird neu gestartet.§r")).prefix(getPrefix()).toString());
     }
 }

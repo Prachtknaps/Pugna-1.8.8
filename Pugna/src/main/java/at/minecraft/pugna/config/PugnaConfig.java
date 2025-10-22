@@ -1,18 +1,41 @@
 package at.minecraft.pugna.config;
 
 import at.minecraft.pugna.Pugna;
+import at.minecraft.pugna.utils.PlaytimeUtils;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class PugnaConfig {
-    private final FileConfiguration configuration;
+    private final Pugna plugin;
+    private final String fileName = "config.yml";
+
+    private final File configFile;
+    private FileConfiguration configuration;
+
+    public PugnaConfig(Pugna plugin) {
+        this.plugin = plugin;
+        this.configFile = new File(plugin.getDataFolder(), this.fileName);
+    }
 
     /* === Game === */
     private boolean development;
     private Long developmentSeed;
+    private LocalTime playtimeStart;
+    private LocalTime playtimeEnd;
+    private ZoneId playtimeZoneId;
+    private boolean requireMajorityOnline;
     private boolean useFriedolin;
     private boolean useBerta;
     private boolean useFoundDiamonds;
@@ -75,12 +98,11 @@ public class PugnaConfig {
     private String navigationItemName;
     private String leaveItemName;
 
-    public PugnaConfig(Pugna plugin) {
-        plugin.saveDefaultConfig();
-        this.configuration = plugin.getConfig();
-    }
-
     /* === Getters === */
+
+    public FileConfiguration getConfig() {
+        return this.configuration;
+    }
 
     public boolean isDevelopment() {
         return development;
@@ -88,6 +110,22 @@ public class PugnaConfig {
 
     public Long getDevelopmentSeed() {
         return developmentSeed;
+    }
+
+    public LocalTime getPlaytimeStart() {
+        return playtimeStart;
+    }
+
+    public LocalTime getPlaytimeEnd() {
+        return playtimeEnd;
+    }
+
+    public ZoneId getPlaytimeZoneId() {
+        return playtimeZoneId;
+    }
+
+    public boolean requireMajorityOnline() {
+        return requireMajorityOnline;
     }
 
     public boolean useFriedolin() {
@@ -264,9 +302,53 @@ public class PugnaConfig {
 
     /* === Operations === */
 
+    public void saveDefaultConfig() {
+        if (!plugin.getDataFolder().exists() && !plugin.getDataFolder().mkdirs()) {
+            plugin.getLogger().warning("Could not create plugin data folder.");
+        }
+        if (!configFile.exists()) {
+            try {
+                plugin.saveResource(this.fileName, false);
+            } catch (IllegalArgumentException exception) {
+                plugin.getLogger().severe("Default resource '" + this.fileName + "' not found in JAR. Did you add it to src/main/resources/?");
+            }
+        }
+    }
+
+    public void save() {
+        if (this.configuration == null) return;
+        try {
+            this.configuration.save(this.configFile);
+        } catch (Exception exception) {
+            plugin.getLogger().severe("Could not save '" + this.fileName + "': " + exception.getMessage());
+        }
+    }
+
+    public void reload() {
+        this.configuration = YamlConfiguration.loadConfiguration(this.configFile);
+
+        try (InputStream defaultStream = plugin.getResource(this.fileName)) {
+            if (defaultStream != null) {
+                YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(
+                        new InputStreamReader(defaultStream, StandardCharsets.UTF_8)
+                );
+                this.configuration.setDefaults(defaultConfig);
+                this.configuration.options().copyDefaults(true);
+                this.configuration.options().copyHeader(true);
+                save();
+            } else {
+                plugin.getLogger().fine("No default resource found for '" + this.fileName + "'.");
+            }
+        } catch (Exception exception) {
+            plugin.getLogger().severe("Could not reload '" + this.fileName + "': " + exception.getMessage());
+        }
+    }
+
     /* === Setup === */
 
     public void setup() {
+        configuration = getConfig();
+
         development = configuration.getBoolean("game.development", false);
         Object initialDevelopmentSeed = configuration.get("game.development_seed");
         if (initialDevelopmentSeed instanceof Number) {
@@ -280,6 +362,33 @@ public class PugnaConfig {
         } else {
             developmentSeed = null;
         }
+
+        String configuredStart = configuration.getString("game.playtime.start", "14:00:00");
+        String configuredEnd = configuration.getString("game.playtime.end", "22:00:00");
+        String configuredZone = configuration.getString("game.playtime.timezone", "Europe/Vienna");
+        DateTimeFormatter formatterWithSeconds = DateTimeFormatter.ofPattern("H:mm[:ss]");
+
+        try {
+            playtimeStart = LocalTime.parse(configuredStart, formatterWithSeconds);
+        } catch (DateTimeParseException exception) {
+            playtimeStart = LocalTime.of(14, 0, 0);
+        }
+
+        try {
+            playtimeEnd = LocalTime.parse(configuredEnd, formatterWithSeconds);
+        } catch (DateTimeParseException exception) {
+            playtimeEnd = LocalTime.of(22, 0, 0);
+        }
+
+        try {
+            playtimeZoneId = ZoneId.of(configuredZone);
+        } catch (Exception exception) {
+            playtimeZoneId = ZoneId.of("Europe/Vienna");
+        }
+
+        PlaytimeUtils.invalidateCache();
+
+        requireMajorityOnline = configuration.getBoolean("game.require_majority_online", true);
         useFriedolin = configuration.getBoolean("game.use_friedolin", true);
         useBerta = configuration.getBoolean("game.use_berta", true);
         useFoundDiamonds = configuration.getBoolean("game.use_found_diamonds", true);

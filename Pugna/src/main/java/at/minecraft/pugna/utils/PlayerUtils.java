@@ -79,6 +79,10 @@ public final class PlayerUtils {
             return true;
         }
 
+        if (!pugnaConfig.requireMajorityOnline()) {
+            return !getOnlineAlivePlayers().isEmpty();
+        }
+
         int alivePlayersCount = getAlivePlayersCount();
         int onlineAlivePlayersCount = getOnlineAlivePlayers().size();
 

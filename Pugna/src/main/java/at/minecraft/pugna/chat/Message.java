@@ -104,5 +104,6 @@ public enum Message {
     /* === Kick === */
     KICK_SERVER_FULL,
     KICK_HUB_COMMAND,
+    KICK_PLAYTIME_WINDOW,
     KICK_SERVER_RESTARTING
 }

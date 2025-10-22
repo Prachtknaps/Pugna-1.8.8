@@ -32,6 +32,7 @@ at\minecraft\pugna\listeners\InteractionListener.class
 at\minecraft\pugna\utils\ChatUtils.class
 at\minecraft\pugna\listeners\ChatListener.class
 at\minecraft\pugna\world\seeds\PugnaSeed.class
+at\minecraft\pugna\utils\PlaytimeUtils.class
 at\minecraft\pugna\listeners\BlockListener.class
 at\minecraft\pugna\game\countdowns\RestartCountdown.class
 at\minecraft\pugna\world\seeds\SeedManager.class
