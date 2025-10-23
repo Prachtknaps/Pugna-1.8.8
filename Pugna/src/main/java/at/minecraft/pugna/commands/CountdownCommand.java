@@ -6,6 +6,7 @@ import at.minecraft.pugna.game.GameManager;
 import at.minecraft.pugna.game.GameState;
 import at.minecraft.pugna.game.countdowns.GameCountdown;
 import at.minecraft.pugna.game.countdowns.LobbyCountdown;
+import at.minecraft.pugna.utils.ChatUtils;
 import at.minecraft.pugna.utils.CountdownUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -70,7 +71,7 @@ public class CountdownCommand implements CommandExecutor {
             String time = CountdownUtils.getTime(seconds);
             String unit = CountdownUtils.getUnit(seconds);
             String message = messageConfig.getChatMessage(Message.COUNTDOWN_UPDATE_SUCCESS).time(time).unit(unit).toString();
-            sender.sendMessage(ChatColor.stripColor(message));
+            ChatUtils.broadcast(message);
             return;
         }
 
@@ -86,7 +87,7 @@ public class CountdownCommand implements CommandExecutor {
             String time = CountdownUtils.getTime(seconds);
             String unit = CountdownUtils.getUnit(seconds);
             String message = messageConfig.getChatMessage(Message.COUNTDOWN_UPDATE_SUCCESS).time(time).unit(unit).toString();
-            sender.sendMessage(ChatColor.stripColor(message));
+            ChatUtils.broadcast(message);
             return;
         }
 
@@ -134,7 +135,7 @@ public class CountdownCommand implements CommandExecutor {
             String time = CountdownUtils.getTime(seconds);
             String unit = CountdownUtils.getUnit(seconds);
             String message = messageConfig.getChatMessage(Message.COUNTDOWN_UPDATE_SUCCESS).time(time).unit(unit).toString();
-            player.sendMessage(message);
+            ChatUtils.broadcast(message);
             return;
         }
 
@@ -150,7 +151,7 @@ public class CountdownCommand implements CommandExecutor {
             String time = CountdownUtils.getTime(seconds);
             String unit = CountdownUtils.getUnit(seconds);
             String message = messageConfig.getChatMessage(Message.COUNTDOWN_UPDATE_SUCCESS).time(time).unit(unit).toString();
-            player.sendMessage(message);
+            ChatUtils.broadcast(message);
             return;
         }
 
