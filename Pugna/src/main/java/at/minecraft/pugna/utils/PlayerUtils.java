@@ -79,7 +79,7 @@ public final class PlayerUtils {
             return true;
         }
 
-        if (!pugnaConfig.requireMajorityOnline()) {
+        if (!getPugnaConfig().requireMajorityOnline()) {
             return !getOnlineAlivePlayers().isEmpty();
         }
 
