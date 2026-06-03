@@ -5,6 +5,7 @@ at\minecraft\pugna\game\GameManager.class
 at\minecraft\pugna\commands\HubCommand.class
 at\minecraft\pugna\utils\TeamUtils.class
 at\minecraft\pugna\world\spawn\SpawnManager.class
+at\minecraft\pugna\commands\PugnaCommand.class
 at\minecraft\pugna\listeners\DamageListener.class
 at\minecraft\pugna\gui\NavigationGUI.class
 at\minecraft\pugna\utils\BlockUtils.class

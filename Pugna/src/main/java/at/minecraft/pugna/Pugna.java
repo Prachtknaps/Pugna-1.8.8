@@ -99,6 +99,7 @@ public final class Pugna extends JavaPlugin {
         getCommand("countdown").setExecutor(new CountdownCommand(messageConfig, gameManager));
         getCommand("gui").setExecutor(new GuiCommand(messageConfig, gameManager));
         getCommand("hub").setExecutor(new HubCommand(messageConfig));
+        getCommand("pugna").setExecutor(new PugnaCommand(messageConfig));
         getCommand("rules").setExecutor(new RulesCommand(messageConfig));
         getCommand("team").setExecutor(new TeamCommand(messageConfig, gameManager));
 
