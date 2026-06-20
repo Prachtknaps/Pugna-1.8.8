@@ -1,9 +1,11 @@
 game:
   development: false
-  development_seed: null
+  development_seed:
+    seed: null
+    world_type: "NORMAL"
   playtime:
-    start: "14:00:00"
-    end: "22:00:00"
+    start: "00:00:00"
+    end: "00:00:00"
     timezone: "Europe/Vienna"
   require_majority_online: true
   use_friedolin: true
@@ -11,6 +13,7 @@ game:
   use_found_diamonds: true
 
 players:
+  comments: "Maximum of 128 players in total"
   friendly_fire: false
   max_teams_count: 16
   max_team_capacity: 1
@@ -62,6 +65,67 @@ pugna:
     z: 0.5
     yaw: 0.0
     pitch: 0.0
+  seeds:
+    comments: [
+      "world_types: NORMAL | LARGE_BIOMES",
+      "radius depends on player count: 4 players -> 24 blocks | 8 players -> 32 blocks | 16 players -> 40 blocks | 32 players -> 48 blocks | 64 players -> 56 blocks | 128 players -> 64 blocks"
+    ]
+    entries:
+      0:
+        seed: -9008001471532830816
+        world_type: "NORMAL"
+        min_player_count: 4
+        max_player_count: 16
+      1:
+        seed: -7369099047549311069
+        world_type: "NORMAL"
+        min_player_count: 4
+        max_player_count: 32
+      2:
+        seed: -1124061784166597672
+        world_type: "LARGE_BIOMES"
+        min_player_count: 4
+        max_player_count: 32
+      3:
+        seed: 14000054
+        world_type: "NORMAL"
+        min_player_count: 4
+        max_player_count: 16
+      4:
+        seed: 1729687638268160097
+        world_type: "NORMAL"
+        min_player_count: 4
+        max_player_count: 16
+      5:
+        seed: 174001683
+        world_type: "NORMAL"
+        min_player_count: 8
+        max_player_count: 16
+      6:
+        seed: 2078843530080609644
+        world_type: "NORMAL"
+        min_player_count: 4
+        max_player_count: 128
+      7:
+        seed: 323003467
+        world_type: "NORMAL"
+        min_player_count: 4
+        max_player_count: 64
+      8:
+        seed: 527616680074691
+        world_type: "NORMAL"
+        min_player_count: 4
+        max_player_count: 64
+      9:
+        seed: 728006554
+        world_type: "NORMAL"
+        min_player_count: 4
+        max_player_count: 16
+      10:
+        seed: 762008129
+        world_type: "NORMAL"
+        min_player_count: 4
+        max_player_count: 32
 
 border:
   base_size: 2048.0

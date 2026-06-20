@@ -2,6 +2,10 @@ package at.minecraft.pugna.config;
 
 import at.minecraft.pugna.Pugna;
 import at.minecraft.pugna.utils.PlaytimeUtils;
+import at.minecraft.pugna.world.seeds.PugnaSeed;
+import at.minecraft.pugna.world.spawn.SpawnManager;
+import org.bukkit.WorldType;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -31,7 +35,7 @@ public class PugnaConfig {
 
     /* === Game === */
     private boolean development;
-    private Long developmentSeed;
+    private PugnaSeed developmentSeed;
     private LocalTime playtimeStart;
     private LocalTime playtimeEnd;
     private ZoneId playtimeZoneId;
@@ -63,6 +67,7 @@ public class PugnaConfig {
     private double pugnaSpawnZ;
     private float pugnaSpawnYaw;
     private float pugnaSpawnPitch;
+    private List<PugnaSeed> seeds;
 
     /* === Border === */
     private double borderBaseSize;
@@ -112,7 +117,7 @@ public class PugnaConfig {
         return development;
     }
 
-    public Long getDevelopmentSeed() {
+    public PugnaSeed getDevelopmentSeed() {
         return developmentSeed;
     }
 
@@ -214,6 +219,10 @@ public class PugnaConfig {
 
     public float getPugnaSpawnPitch() {
         return pugnaSpawnPitch;
+    }
+
+    public List<PugnaSeed> getSeeds() {
+        return seeds;
     }
 
     public double getBorderBaseSize() {
@@ -370,18 +379,7 @@ public class PugnaConfig {
         configuration = getConfig();
 
         development = configuration.getBoolean("game.development", false);
-        Object initialDevelopmentSeed = configuration.get("game.development_seed");
-        if (initialDevelopmentSeed instanceof Number) {
-            developmentSeed = ((Number) initialDevelopmentSeed).longValue();
-        } else if (initialDevelopmentSeed instanceof String) {
-            try {
-                developmentSeed = Long.parseLong((String) initialDevelopmentSeed);
-            } catch (NumberFormatException exception) {
-                developmentSeed = null;
-            }
-        } else {
-            developmentSeed = null;
-        }
+        developmentSeed = getDevelopmentSeedFromConfig();
 
         String configuredStart = configuration.getString("game.playtime.start", "14:00:00");
         String configuredEnd = configuration.getString("game.playtime.end", "22:00:00");
@@ -414,7 +412,7 @@ public class PugnaConfig {
         useFoundDiamonds = configuration.getBoolean("game.use_found_diamonds", true);
 
         friendlyFire = configuration.getBoolean("players.friendly_fire", false);
-        maxTeamsCount = Math.max(4, Math.min(64, configuration.getInt("players.max_teams_count", 16)));
+        maxTeamsCount = Math.max(4, Math.min(128, configuration.getInt("players.max_teams_count", 16)));
 
         int initialCapacity = configuration.getInt("players.max_team_capacity", 1);
         maxTeamCapacity = (initialCapacity < maxTeamsCount && maxTeamsCount % initialCapacity == 0) ? initialCapacity : 1;
@@ -438,6 +436,8 @@ public class PugnaConfig {
         pugnaSpawnZ = configuration.getDouble("pugna.spawn.z", 0.5);
         pugnaSpawnYaw = (float) configuration.getDouble("pugna.spawn.yaw", 0.0);
         pugnaSpawnPitch = (float) configuration.getDouble("pugna.spawn.pitch", 0.0);
+        seeds = getSeedsFromConfig();
+        Collections.shuffle(seeds);
 
         borderBaseSize = configuration.getDouble("border.base_size", 2048.0);
         borderEndSize = configuration.getDouble("border.end_size", 256.0);
@@ -475,5 +475,96 @@ public class PugnaConfig {
         infoBookItemName = configuration.getString("item_names.info_book_item", "§6Pugna");
         navigationItemName = configuration.getString("item_names.navigation_item", "§6Navigation§r");
         leaveItemName = configuration.getString("item_names.leave_item", "§cVerlassen§r");
+    }
+
+    /* === Helpers === */
+
+    private PugnaSeed getDevelopmentSeedFromConfig() {
+        Long seed = getLong(configuration.get("game.development_seed.seed"));
+        if (seed == null) {
+            return null;
+        }
+
+        String worldTypeName = configuration.getString("game.development_seed.world_type", "NORMAL");
+        WorldType worldType = getWorldType(worldTypeName);
+
+        int minRadius = SpawnManager.calculateRadius(4);
+        int maxRadius = SpawnManager.calculateRadius(128);
+
+        return new PugnaSeed(seed, worldType, minRadius, maxRadius);
+    }
+
+    private List<PugnaSeed> getSeedsFromConfig() {
+        List<PugnaSeed> configurationSeeds = new ArrayList<>();
+        ConfigurationSection seedEntriesSection = configuration.getConfigurationSection("pugna.seeds.entries");
+
+        if (seedEntriesSection == null) {
+            return configurationSeeds;
+        }
+
+        for (String seedEntryKey : seedEntriesSection.getKeys(false)) {
+            ConfigurationSection seedEntrySection = seedEntriesSection.getConfigurationSection(seedEntryKey);
+
+            if (seedEntrySection == null) {
+                continue;
+            }
+
+            PugnaSeed pugnaSeed = getSeedFromEntry(seedEntrySection);
+            if (pugnaSeed != null) {
+                configurationSeeds.add(pugnaSeed);
+            }
+        }
+
+        return configurationSeeds;
+    }
+
+    private PugnaSeed getSeedFromEntry(ConfigurationSection seedEntrySection) {
+        Long seed = getLong(seedEntrySection.get("seed"));
+        if (seed == null) {
+            return null;
+        }
+
+        String worldTypeName = seedEntrySection.getString("world_type", "NORMAL");
+        WorldType worldType = getWorldType(worldTypeName);
+
+        int minPlayerCount = seedEntrySection.getInt("min_player_count", 4);
+        int maxPlayerCount = seedEntrySection.getInt("max_player_count", 128);
+
+        minPlayerCount = Math.max(1, minPlayerCount);
+        maxPlayerCount = Math.max(minPlayerCount, maxPlayerCount);
+
+        return new PugnaSeed(seed, worldType, SpawnManager.calculateRadius(minPlayerCount), SpawnManager.calculateRadius(maxPlayerCount));
+    }
+
+    private WorldType getWorldType(String worldTypeName) {
+        WorldType fallback = WorldType.NORMAL;
+
+        if (worldTypeName == null) {
+            return fallback;
+        }
+
+        WorldType worldType = WorldType.getByName(worldTypeName.trim().toUpperCase());
+
+        if (worldType == null) {
+            return fallback;
+        }
+
+        return worldType;
+    }
+
+    private Long getLong(Object value) {
+        if (value instanceof Number) {
+            return ((Number) value).longValue();
+        }
+
+        if (value instanceof String) {
+            try {
+                return Long.parseLong(((String) value).trim());
+            } catch (NumberFormatException exception) {
+                return null;
+            }
+        }
+
+        return null;
     }
 }
