@@ -76,16 +76,20 @@ public class PugnaConfig {
     private int restartCountdownSeconds;
 
     /* === Events === */
+    private boolean netherStartEnabled;
     private int netherStartCountdownStartSeconds;
     private int netherStartSeconds;
 
+    private boolean borderShrinkEnabled;
     private int borderShrinkStartCountdownStartSeconds;
     private int borderShrinkStartSeconds;
     private int borderShrinkEndSeconds;
 
+    private boolean netherEndEnabled;
     private int netherEndCountdownStartSeconds;
     private int netherEndSeconds;
 
+    private boolean enemyRevealEnabled;
     private int enemyRevealCountdownStartSeconds;
     private int enemyRevealSeconds;
 
@@ -240,12 +244,20 @@ public class PugnaConfig {
         return restartCountdownSeconds;
     }
 
+    public boolean isNetherStartEnabled() {
+        return netherStartEnabled;
+    }
+
     public int getNetherStartCountdownStartSeconds() {
         return netherStartCountdownStartSeconds;
     }
 
     public int getNetherStartSeconds() {
         return netherStartSeconds;
+    }
+
+    public boolean isBorderShrinkEnabled() {
+        return borderShrinkEnabled;
     }
 
     public int getBorderShrinkStartCountdownStartSeconds() {
@@ -260,12 +272,20 @@ public class PugnaConfig {
         return borderShrinkEndSeconds;
     }
 
+    public boolean isNetherEndEnabled() {
+        return netherEndEnabled;
+    }
+
     public int getNetherEndCountdownStartSeconds() {
         return netherEndCountdownStartSeconds;
     }
 
     public int getNetherEndSeconds() {
         return netherEndSeconds;
+    }
+
+    public boolean isEnemyRevealEnabled() {
+        return enemyRevealEnabled;
     }
 
     public int getEnemyRevealCountdownStartSeconds() {
@@ -428,16 +448,23 @@ public class PugnaConfig {
         gameCountdownSeconds = Math.max(0, configuration.getInt("countdowns.game.seconds", 40));
         restartCountdownSeconds = Math.max(0, configuration.getInt("countdowns.restart.seconds", 25));
 
+        netherStartEnabled = configuration.getBoolean("events.nether_start.enabled", true);
         netherStartCountdownStartSeconds = Math.max(0, configuration.getInt("events.nether_start.countdown_start_seconds", 3600));
         netherStartSeconds = Math.max(netherStartCountdownStartSeconds, configuration.getInt("events.nether_start.event_seconds", 5400));
 
+        borderShrinkEnabled = configuration.getBoolean("events.border_shrink.enabled", true);
         borderShrinkStartCountdownStartSeconds = Math.max(netherStartSeconds, configuration.getInt("events.border_shrink.countdown_start_seconds", 12600));
         borderShrinkStartSeconds = Math.max(borderShrinkStartCountdownStartSeconds, configuration.getInt("events.border_shrink.event_start_seconds", 14400));
         borderShrinkEndSeconds = Math.max(borderShrinkStartSeconds, configuration.getInt("events.border_shrink.event_end_seconds", 36000));
 
+        netherEndEnabled = configuration.getBoolean("events.nether_end.enabled", true);
+        if (!netherStartEnabled) {
+            netherEndEnabled = false;
+        }
         netherEndCountdownStartSeconds = Math.max(borderShrinkEndSeconds, configuration.getInt("events.nether_end.countdown_start_seconds", 41400));
         netherEndSeconds = Math.max(netherEndCountdownStartSeconds, configuration.getInt("events.nether_end.event_seconds", 43200));
 
+        enemyRevealEnabled = configuration.getBoolean("events.enemy_reveal.enabled", true);
         enemyRevealCountdownStartSeconds = Math.max(netherEndSeconds, configuration.getInt("events.enemy_reveal.countdown_start_seconds", 48600));
         enemyRevealSeconds = Math.max(enemyRevealCountdownStartSeconds, configuration.getInt("events.enemy_reveal.event_seconds", 50400));
 

@@ -92,6 +92,7 @@ allow-nether=false
 difficulty=3
 announce-player-achievements=false
 allow-flight=true
+level-name=lobby
 ```
 
 Falls die Datei vorher diese Werte enthält:
@@ -102,9 +103,16 @@ allow-nether=true
 difficulty=1
 announce-player-achievements=true
 allow-flight=false
+level-name=world
 ```
 
 müssen sie entsprechend ersetzt werden.
+
+Optional die MOTD anpassen:
+
+```properties
+motd=\u00A7b\u00A7lMinecraft Pugna\u00A7r\n\u00A7r\u00A7eHier gibt's ordentlich \u00A76Drische\u00A7e\!
+```
 
 ## Plugin-Konfiguration
 

@@ -21,7 +21,5 @@ public final class SoundUtils {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.playSound(player.getLocation(), sound, volume, pitch);
         }
-
-        Bukkit.getLogger().info("[Sound] Broadcasted sound '" + sound.toString() + "' (volume: " + volume + ", pitch: " + pitch + ") for all players.");
     }
 }

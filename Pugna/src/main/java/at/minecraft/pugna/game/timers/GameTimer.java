@@ -48,13 +48,30 @@ public class GameTimer extends BukkitRunnable {
 
         this.blockedGUIPlayers = new ArrayList<>();
 
-        this.events = new ArrayList<>(Arrays.asList(
-                new NetherStartEvent(messageConfig, pugnaConfig.getNetherStartCountdownStartSeconds(), pugnaConfig.getNetherStartSeconds()),
-                new BorderShrinkEvent(messageConfig, pugnaConfig.getBorderShrinkStartCountdownStartSeconds(), pugnaConfig.getBorderShrinkStartSeconds(), pugnaConfig.getBorderShrinkEndSeconds()),
-                new NetherEndEvent(messageConfig, pugnaConfig.getNetherEndCountdownStartSeconds(), pugnaConfig.getNetherEndSeconds()),
-                new EnemyRevealEvent(messageConfig, pugnaConfig.getEnemyRevealCountdownStartSeconds(), pugnaConfig.getEnemyRevealSeconds()),
-                new GameEndEvent(pugnaConfig, messageConfig, worldManager, gameManager, pugnaConfig.getGameEndCountdownStartSeconds(), pugnaConfig.getGameEndSeconds())
-        ));
+        this.events = new ArrayList<>();
+
+        if (pugnaConfig.isNetherStartEnabled()) {
+            events.add(new NetherStartEvent(messageConfig, pugnaConfig.getNetherStartCountdownStartSeconds(), pugnaConfig.getNetherStartSeconds()));
+        }
+
+        if (pugnaConfig.isBorderShrinkEnabled()) {
+            events.add(new BorderShrinkEvent(messageConfig, pugnaConfig.getBorderShrinkStartCountdownStartSeconds(), pugnaConfig.getBorderShrinkStartSeconds(), pugnaConfig.getBorderShrinkEndSeconds()));
+        }
+
+        if (pugnaConfig.isNetherStartEnabled() && pugnaConfig.isNetherEndEnabled()) {
+            events.add(new NetherEndEvent(messageConfig, pugnaConfig.getNetherEndCountdownStartSeconds(), pugnaConfig.getNetherEndSeconds()));
+        }
+
+        if (pugnaConfig.isEnemyRevealEnabled()) {
+            events.add(new EnemyRevealEvent(messageConfig, pugnaConfig.getEnemyRevealCountdownStartSeconds(), pugnaConfig.getEnemyRevealSeconds()));
+        }
+
+        events.add(new GameEndEvent(pugnaConfig, messageConfig, worldManager, gameManager, pugnaConfig.getGameEndCountdownStartSeconds(), pugnaConfig.getGameEndSeconds()));
+
+        Bukkit.getLogger().info("Loaded events:");
+        for (GameEvent event : events) {
+            Bukkit.getLogger().info(event.getEventName());
+        }
     }
 
     /* === Getters === */

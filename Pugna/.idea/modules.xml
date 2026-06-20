@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Pugna.iml" filepath="$PROJECT_DIR$/Pugna.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Pugna.iml" filepath="$PROJECT_DIR$/.idea/Pugna.iml" />
     </modules>
   </component>
 </project>
