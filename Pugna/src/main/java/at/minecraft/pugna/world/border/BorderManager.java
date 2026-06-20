@@ -128,8 +128,10 @@ public final class BorderManager {
 
             gameConfig.saveCurrentBorderSize(currentBorderSize);
         } else if (state == GameState.RESTARTING) {
+            double currentBorderSize = Math.min(worldBorder.getSize(), maxBorderSize);
+
             worldBorder.setCenter(spawnX, spawnZ);
-            worldBorder.setSize(borderEndSize);
+            worldBorder.setSize(currentBorderSize);
 
             gameConfig.saveCurrentBorderSize(borderEndSize);
         }
