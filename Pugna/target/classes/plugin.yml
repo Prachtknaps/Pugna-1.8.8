@@ -1,5 +1,5 @@
 name: Pugna
-version: '1.0'
+version: '1.4'
 main: at.minecraft.pugna.Pugna
 authors: [ DerStresser ]
 prefix: "[Pugna]"

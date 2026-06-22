@@ -6,7 +6,7 @@
 
     <groupId>at.minecraft</groupId>
     <artifactId>Pugna</artifactId>
-    <version>1.3</version>
+    <version>1.8</version>
     <packaging>jar</packaging>
 
     <name>Pugna</name>

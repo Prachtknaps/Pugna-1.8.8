@@ -480,6 +480,10 @@ public class PugnaConfig {
     /* === Helpers === */
 
     private PugnaSeed getDevelopmentSeedFromConfig() {
+        if (!development) {
+            return null;
+        }
+
         Long seed = getLong(configuration.get("game.development_seed.seed"));
         if (seed == null) {
             return null;

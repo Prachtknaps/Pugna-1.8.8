@@ -1,7 +1,7 @@
 game:
   development: false
   development_seed:
-    seed: null
+    seed: 0
     world_type: "NORMAL"
   playtime:
     start: "00:00:00"
